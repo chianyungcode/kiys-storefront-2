@@ -1,4 +1,8 @@
 import { createLazyFileRoute } from "@tanstack/react-router";
+import Navbar from "@/components/ui/navbar";
+import Container from "@/components/ui/container";
+import ProductCatalog from "@/components/product-catalog";
+import Footer from "@/components/ui/footer";
 
 export const Route = createLazyFileRoute("/")({
   component: Index,
@@ -6,8 +10,12 @@ export const Route = createLazyFileRoute("/")({
 
 function Index() {
   return (
-    <div className="p-2">
-      <h3 className="text-4xl font-bold">Welcome Home!</h3>
+    <div className="h-[4000px] relative bg-[#FDFEFE]">
+      <Navbar />
+      <Container>
+        <ProductCatalog inCategoryPage={false} />
+      </Container>
+      <Footer />
     </div>
   );
 }
