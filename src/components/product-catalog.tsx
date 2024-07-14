@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import ProductCard from "./ui/product-card";
 
 interface ProductCatalogProps {
@@ -12,7 +13,12 @@ const ProductCatalog: React.FC<ProductCatalogProps> = ({ inCategoryPage }) => {
       ) : (
         <h1 className="text-4xl font-semibold">Keyboards</h1>
       )}
-      <div className="grid grid-cols-4 gap-x-4 items-center">
+      <div
+        className={cn(
+          "grid gap-x-4 gap-y-6 items-center",
+          inCategoryPage ? "grid-cols-3" : "grid-cols-4"
+        )}
+      >
         <ProductCard />
         <ProductCard />
         <ProductCard />

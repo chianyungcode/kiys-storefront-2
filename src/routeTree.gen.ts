@@ -14,7 +14,10 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as LayoutImport } from './routes/_layout'
-import { Route as LayoutCategoryIndexImport } from './routes/_layout/$category/index'
+import { Route as LayoutMouseIndexImport } from './routes/_layout/mouse/index'
+import { Route as LayoutKeyboardsIndexImport } from './routes/_layout/keyboards/index'
+import { Route as LayoutHeadphoneIndexImport } from './routes/_layout/headphone/index'
+import { Route as LayoutAccessoriesIndexImport } from './routes/_layout/accessories/index'
 
 // Create Virtual Routes
 
@@ -38,8 +41,23 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
-const LayoutCategoryIndexRoute = LayoutCategoryIndexImport.update({
-  path: '/$category/',
+const LayoutMouseIndexRoute = LayoutMouseIndexImport.update({
+  path: '/mouse/',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutKeyboardsIndexRoute = LayoutKeyboardsIndexImport.update({
+  path: '/keyboards/',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutHeadphoneIndexRoute = LayoutHeadphoneIndexImport.update({
+  path: '/headphone/',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutAccessoriesIndexRoute = LayoutAccessoriesIndexImport.update({
+  path: '/accessories/',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -68,11 +86,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutLazyImport
       parentRoute: typeof rootRoute
     }
-    '/_layout/$category/': {
-      id: '/_layout/$category/'
-      path: '/$category'
-      fullPath: '/$category'
-      preLoaderRoute: typeof LayoutCategoryIndexImport
+    '/_layout/accessories/': {
+      id: '/_layout/accessories/'
+      path: '/accessories'
+      fullPath: '/accessories'
+      preLoaderRoute: typeof LayoutAccessoriesIndexImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/headphone/': {
+      id: '/_layout/headphone/'
+      path: '/headphone'
+      fullPath: '/headphone'
+      preLoaderRoute: typeof LayoutHeadphoneIndexImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/keyboards/': {
+      id: '/_layout/keyboards/'
+      path: '/keyboards'
+      fullPath: '/keyboards'
+      preLoaderRoute: typeof LayoutKeyboardsIndexImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/mouse/': {
+      id: '/_layout/mouse/'
+      path: '/mouse'
+      fullPath: '/mouse'
+      preLoaderRoute: typeof LayoutMouseIndexImport
       parentRoute: typeof LayoutImport
     }
   }
@@ -82,7 +121,12 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
-  LayoutRoute: LayoutRoute.addChildren({ LayoutCategoryIndexRoute }),
+  LayoutRoute: LayoutRoute.addChildren({
+    LayoutAccessoriesIndexRoute,
+    LayoutHeadphoneIndexRoute,
+    LayoutKeyboardsIndexRoute,
+    LayoutMouseIndexRoute,
+  }),
   AboutLazyRoute,
 })
 
@@ -105,14 +149,29 @@ export const routeTree = rootRoute.addChildren({
     "/_layout": {
       "filePath": "_layout.tsx",
       "children": [
-        "/_layout/$category/"
+        "/_layout/accessories/",
+        "/_layout/headphone/",
+        "/_layout/keyboards/",
+        "/_layout/mouse/"
       ]
     },
     "/about": {
       "filePath": "about.lazy.tsx"
     },
-    "/_layout/$category/": {
-      "filePath": "_layout/$category/index.tsx",
+    "/_layout/accessories/": {
+      "filePath": "_layout/accessories/index.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/headphone/": {
+      "filePath": "_layout/headphone/index.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/keyboards/": {
+      "filePath": "_layout/keyboards/index.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/mouse/": {
+      "filePath": "_layout/mouse/index.tsx",
       "parent": "/_layout"
     }
   }
