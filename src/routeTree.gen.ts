@@ -14,9 +14,11 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as LayoutImport } from './routes/_layout'
+import { Route as LayoutProfileIndexImport } from './routes/_layout/profile/index'
 import { Route as LayoutMouseIndexImport } from './routes/_layout/mouse/index'
 import { Route as LayoutKeyboardsIndexImport } from './routes/_layout/keyboards/index'
 import { Route as LayoutHeadphoneIndexImport } from './routes/_layout/headphone/index'
+import { Route as LayoutCartIndexImport } from './routes/_layout/cart/index'
 import { Route as LayoutAccessoriesIndexImport } from './routes/_layout/accessories/index'
 
 // Create Virtual Routes
@@ -41,6 +43,11 @@ const IndexLazyRoute = IndexLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
+const LayoutProfileIndexRoute = LayoutProfileIndexImport.update({
+  path: '/profile/',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
 const LayoutMouseIndexRoute = LayoutMouseIndexImport.update({
   path: '/mouse/',
   getParentRoute: () => LayoutRoute,
@@ -53,6 +60,11 @@ const LayoutKeyboardsIndexRoute = LayoutKeyboardsIndexImport.update({
 
 const LayoutHeadphoneIndexRoute = LayoutHeadphoneIndexImport.update({
   path: '/headphone/',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutCartIndexRoute = LayoutCartIndexImport.update({
+  path: '/cart/',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -93,6 +105,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAccessoriesIndexImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/cart/': {
+      id: '/_layout/cart/'
+      path: '/cart'
+      fullPath: '/cart'
+      preLoaderRoute: typeof LayoutCartIndexImport
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/headphone/': {
       id: '/_layout/headphone/'
       path: '/headphone'
@@ -114,6 +133,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutMouseIndexImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/profile/': {
+      id: '/_layout/profile/'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof LayoutProfileIndexImport
+      parentRoute: typeof LayoutImport
+    }
   }
 }
 
@@ -123,9 +149,11 @@ export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
   LayoutRoute: LayoutRoute.addChildren({
     LayoutAccessoriesIndexRoute,
+    LayoutCartIndexRoute,
     LayoutHeadphoneIndexRoute,
     LayoutKeyboardsIndexRoute,
     LayoutMouseIndexRoute,
+    LayoutProfileIndexRoute,
   }),
   AboutLazyRoute,
 })
@@ -150,9 +178,11 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_layout.tsx",
       "children": [
         "/_layout/accessories/",
+        "/_layout/cart/",
         "/_layout/headphone/",
         "/_layout/keyboards/",
-        "/_layout/mouse/"
+        "/_layout/mouse/",
+        "/_layout/profile/"
       ]
     },
     "/about": {
@@ -160,6 +190,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_layout/accessories/": {
       "filePath": "_layout/accessories/index.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/cart/": {
+      "filePath": "_layout/cart/index.tsx",
       "parent": "/_layout"
     },
     "/_layout/headphone/": {
@@ -172,6 +206,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_layout/mouse/": {
       "filePath": "_layout/mouse/index.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/profile/": {
+      "filePath": "_layout/profile/index.tsx",
       "parent": "/_layout"
     }
   }
