@@ -7,7 +7,7 @@ const ProductCard = () => {
       {/* Images and actions */}
       <div className="aspect-square rounded-xl bg-gray-100 relative">
         <img
-          src="/public/images/image.webp"
+          src="/image.webp"
           alt="Image"
           className="aspect-square object-cover rounded-2xl"
         />
