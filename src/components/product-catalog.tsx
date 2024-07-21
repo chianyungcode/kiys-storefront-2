@@ -1,11 +1,17 @@
 import { cn } from "@/lib/utils";
 import ProductCard from "./ui/product-card";
+import { Product } from "@/types/product";
+import { Link } from "@tanstack/react-router";
 
 interface ProductCatalogProps {
   inCategoryPage: boolean;
+  products: Product[];
 }
 
-const ProductCatalog: React.FC<ProductCatalogProps> = ({ inCategoryPage }) => {
+const ProductCatalog: React.FC<ProductCatalogProps> = ({
+  inCategoryPage,
+  products,
+}) => {
   return (
     <div className="font-sora space-y-16">
       {inCategoryPage ? (
@@ -19,10 +25,22 @@ const ProductCatalog: React.FC<ProductCatalogProps> = ({ inCategoryPage }) => {
           inCategoryPage ? "grid-cols-3" : "grid-cols-4"
         )}
       >
+        {/* <ProductCard />
         <ProductCard />
         <ProductCard />
-        <ProductCard />
-        <ProductCard />
+        <ProductCard /> */}
+        {products.map((product) => {
+          return (
+            <ul>
+              <Link
+                params={{ "product-slug": product.slug }}
+                to="/keyboards/$product-slug"
+              >
+                <ProductCard data={product} />
+              </Link>
+            </ul>
+          );
+        })}
       </div>
     </div>
   );

@@ -20,6 +20,7 @@ import { Route as LayoutKeyboardsIndexImport } from './routes/_layout/keyboards/
 import { Route as LayoutHeadphoneIndexImport } from './routes/_layout/headphone/index'
 import { Route as LayoutCartIndexImport } from './routes/_layout/cart/index'
 import { Route as LayoutAccessoriesIndexImport } from './routes/_layout/accessories/index'
+import { Route as LayoutKeyboardsProductSlugIndexImport } from './routes/_layout/keyboards/$product-slug/index'
 
 // Create Virtual Routes
 
@@ -72,6 +73,12 @@ const LayoutAccessoriesIndexRoute = LayoutAccessoriesIndexImport.update({
   path: '/accessories/',
   getParentRoute: () => LayoutRoute,
 } as any)
+
+const LayoutKeyboardsProductSlugIndexRoute =
+  LayoutKeyboardsProductSlugIndexImport.update({
+    path: '/keyboards/$product-slug/',
+    getParentRoute: () => LayoutRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -140,6 +147,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutProfileIndexImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/keyboards/$product-slug/': {
+      id: '/_layout/keyboards/$product-slug/'
+      path: '/keyboards/$product-slug'
+      fullPath: '/keyboards/$product-slug'
+      preLoaderRoute: typeof LayoutKeyboardsProductSlugIndexImport
+      parentRoute: typeof LayoutImport
+    }
   }
 }
 
@@ -154,6 +168,7 @@ export const routeTree = rootRoute.addChildren({
     LayoutKeyboardsIndexRoute,
     LayoutMouseIndexRoute,
     LayoutProfileIndexRoute,
+    LayoutKeyboardsProductSlugIndexRoute,
   }),
   AboutLazyRoute,
 })
@@ -182,7 +197,8 @@ export const routeTree = rootRoute.addChildren({
         "/_layout/headphone/",
         "/_layout/keyboards/",
         "/_layout/mouse/",
-        "/_layout/profile/"
+        "/_layout/profile/",
+        "/_layout/keyboards/$product-slug/"
       ]
     },
     "/about": {
@@ -210,6 +226,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_layout/profile/": {
       "filePath": "_layout/profile/index.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/keyboards/$product-slug/": {
+      "filePath": "_layout/keyboards/$product-slug/index.tsx",
       "parent": "/_layout"
     }
   }
