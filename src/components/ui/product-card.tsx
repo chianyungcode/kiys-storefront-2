@@ -3,18 +3,18 @@ import IconButton from "./icon-button";
 import { Product } from "@/types/product";
 
 interface ProductCardProps {
-  data: Product;
+  product: Product;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
-  console.log(data);
+const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  console.log(product);
 
   return (
     <div className="group cursor-pointer rounded-xl space-y-4">
       {/* Images and actions */}
       <div className="aspect-square rounded-xl bg-gray-100 relative">
         <img
-          src={data.images?.[0]?.url || "public/images/image.webp"}
+          src={product.images?.[0]?.url || "public/images/image.webp"}
           alt="Image"
           className="aspect-square object-cover rounded-2xl"
         />
@@ -28,7 +28,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ data }) => {
       </div>
       {/* Description */}
       <div className="space-y-4">
-        <p className="font-semibold text-lg">{data.name}</p>
+        <p className="font-semibold text-lg">{product.name}</p>
         <p className="font-normal text-gray-600 font-sans">
           QMK/VIA Wireless Custom Mechanical Keyboard
         </p>

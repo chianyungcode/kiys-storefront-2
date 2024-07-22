@@ -15,12 +15,13 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as LayoutProfileIndexImport } from './routes/_layout/profile/index'
+import { Route as LayoutProductsIndexImport } from './routes/_layout/products/index'
 import { Route as LayoutMouseIndexImport } from './routes/_layout/mouse/index'
 import { Route as LayoutKeyboardsIndexImport } from './routes/_layout/keyboards/index'
 import { Route as LayoutHeadphoneIndexImport } from './routes/_layout/headphone/index'
 import { Route as LayoutCartIndexImport } from './routes/_layout/cart/index'
 import { Route as LayoutAccessoriesIndexImport } from './routes/_layout/accessories/index'
-import { Route as LayoutKeyboardsProductSlugIndexImport } from './routes/_layout/keyboards/$product-slug/index'
+import { Route as LayoutProductsProductSlugRouteImport } from './routes/_layout/products/$productSlug/route'
 
 // Create Virtual Routes
 
@@ -49,6 +50,11 @@ const LayoutProfileIndexRoute = LayoutProfileIndexImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
+const LayoutProductsIndexRoute = LayoutProductsIndexImport.update({
+  path: '/products/',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
 const LayoutMouseIndexRoute = LayoutMouseIndexImport.update({
   path: '/mouse/',
   getParentRoute: () => LayoutRoute,
@@ -74,9 +80,9 @@ const LayoutAccessoriesIndexRoute = LayoutAccessoriesIndexImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
-const LayoutKeyboardsProductSlugIndexRoute =
-  LayoutKeyboardsProductSlugIndexImport.update({
-    path: '/keyboards/$product-slug/',
+const LayoutProductsProductSlugRouteRoute =
+  LayoutProductsProductSlugRouteImport.update({
+    path: '/products/$productSlug',
     getParentRoute: () => LayoutRoute,
   } as any)
 
@@ -104,6 +110,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/about'
       preLoaderRoute: typeof AboutLazyImport
       parentRoute: typeof rootRoute
+    }
+    '/_layout/products/$productSlug': {
+      id: '/_layout/products/$productSlug'
+      path: '/products/$productSlug'
+      fullPath: '/products/$productSlug'
+      preLoaderRoute: typeof LayoutProductsProductSlugRouteImport
+      parentRoute: typeof LayoutImport
     }
     '/_layout/accessories/': {
       id: '/_layout/accessories/'
@@ -140,18 +153,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutMouseIndexImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/products/': {
+      id: '/_layout/products/'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof LayoutProductsIndexImport
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/profile/': {
       id: '/_layout/profile/'
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof LayoutProfileIndexImport
-      parentRoute: typeof LayoutImport
-    }
-    '/_layout/keyboards/$product-slug/': {
-      id: '/_layout/keyboards/$product-slug/'
-      path: '/keyboards/$product-slug'
-      fullPath: '/keyboards/$product-slug'
-      preLoaderRoute: typeof LayoutKeyboardsProductSlugIndexImport
       parentRoute: typeof LayoutImport
     }
   }
@@ -162,13 +175,14 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexLazyRoute,
   LayoutRoute: LayoutRoute.addChildren({
+    LayoutProductsProductSlugRouteRoute,
     LayoutAccessoriesIndexRoute,
     LayoutCartIndexRoute,
     LayoutHeadphoneIndexRoute,
     LayoutKeyboardsIndexRoute,
     LayoutMouseIndexRoute,
+    LayoutProductsIndexRoute,
     LayoutProfileIndexRoute,
-    LayoutKeyboardsProductSlugIndexRoute,
   }),
   AboutLazyRoute,
 })
@@ -192,17 +206,22 @@ export const routeTree = rootRoute.addChildren({
     "/_layout": {
       "filePath": "_layout.tsx",
       "children": [
+        "/_layout/products/$productSlug",
         "/_layout/accessories/",
         "/_layout/cart/",
         "/_layout/headphone/",
         "/_layout/keyboards/",
         "/_layout/mouse/",
-        "/_layout/profile/",
-        "/_layout/keyboards/$product-slug/"
+        "/_layout/products/",
+        "/_layout/profile/"
       ]
     },
     "/about": {
       "filePath": "about.lazy.tsx"
+    },
+    "/_layout/products/$productSlug": {
+      "filePath": "_layout/products/$productSlug/route.tsx",
+      "parent": "/_layout"
     },
     "/_layout/accessories/": {
       "filePath": "_layout/accessories/index.tsx",
@@ -224,12 +243,12 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_layout/mouse/index.tsx",
       "parent": "/_layout"
     },
-    "/_layout/profile/": {
-      "filePath": "_layout/profile/index.tsx",
+    "/_layout/products/": {
+      "filePath": "_layout/products/index.tsx",
       "parent": "/_layout"
     },
-    "/_layout/keyboards/$product-slug/": {
-      "filePath": "_layout/keyboards/$product-slug/index.tsx",
+    "/_layout/profile/": {
+      "filePath": "_layout/profile/index.tsx",
       "parent": "/_layout"
     }
   }

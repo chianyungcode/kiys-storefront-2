@@ -33,10 +33,10 @@ const ProductCatalog: React.FC<ProductCatalogProps> = ({
           return (
             <ul>
               <Link
-                params={{ "product-slug": product.slug }}
-                to="/keyboards/$product-slug"
+                params={{ productSlug: product.slug }}
+                to="/products/$productSlug"
               >
-                <ProductCard data={product} />
+                <ProductCard product={product} />
               </Link>
             </ul>
           );
