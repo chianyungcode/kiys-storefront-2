@@ -1,10 +1,12 @@
+import { ShoppingCart } from "lucide-react";
+
+import QuantityCount from "./quantity-count";
+
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ShoppingCart } from "lucide-react";
-import QuantityCount from "./quantity-count";
 
 const PopoverCart = () => {
   return (

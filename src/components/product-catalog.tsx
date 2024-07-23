@@ -1,8 +1,10 @@
-import { cn } from "@/lib/utils";
-import ProductCard from "./ui/product-card";
-import { Product } from "@/types/product";
 import { Link } from "@tanstack/react-router";
+
+import ProductCard from "./ui/product-card";
+
+import { cn } from "@/lib/utils";
 import { Category } from "@/types/category";
+import { Product } from "@/types/product";
 
 interface ProductCatalogProps {
   inCategoryPage: boolean;

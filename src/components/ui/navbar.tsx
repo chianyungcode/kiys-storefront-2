@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { CircleUserRound, Search } from "lucide-react";
+
 import PopoverCart from "./popover-cart";
 
 const Navbar = () => {

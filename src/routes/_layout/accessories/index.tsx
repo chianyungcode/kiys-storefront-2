@@ -1,7 +1,8 @@
+import { createFileRoute, useParams } from "@tanstack/react-router";
+
 import ProductCatalog from "@/components/product-catalog";
 import Container from "@/components/ui/container";
 import SidebarFilter from "@/components/ui/sidebar-filter";
-import { createFileRoute, useParams } from "@tanstack/react-router";
 
 const Accessories = () => {
   const params = useParams({ from: "" });

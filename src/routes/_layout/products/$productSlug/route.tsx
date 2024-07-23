@@ -1,3 +1,13 @@
+import {
+  Link,
+  createFileRoute,
+  notFound,
+  useLoaderData,
+  useLocation,
+  useParams,
+} from "@tanstack/react-router";
+import { Heart, ShoppingBag } from "lucide-react";
+
 import { fetchProduct } from "@/api/productApi";
 import NotFound from "@/components/not-found";
 import {
@@ -13,15 +23,6 @@ import QuantityCount from "@/components/ui/quantity-count";
 import { Product } from "@/types/product";
 import { formatToRupiah } from "@/utils/currency-format";
 import { capitalizationFirstLetter } from "@/utils/string-format";
-import {
-  Link,
-  createFileRoute,
-  notFound,
-  useLoaderData,
-  useLocation,
-  useParams,
-} from "@tanstack/react-router";
-import { Heart, ShoppingBag } from "lucide-react";
 
 const ProductDetailsPage = () => {
   const { product } = useLoaderData({ from: "/_layout/products/$productSlug" });

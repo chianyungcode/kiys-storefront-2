@@ -1,11 +1,13 @@
+import { ChevronDown } from "lucide-react";
+import { useState } from "react";
+
+import { Checkbox } from "./checkbox";
+
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
-import { Checkbox } from "./checkbox";
-import { ChevronDown } from "lucide-react";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 interface SidebarFilterProps {

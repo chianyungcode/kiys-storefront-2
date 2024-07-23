@@ -1,5 +1,7 @@
 import { ShoppingCart } from "lucide-react";
+
 import IconButton from "./icon-button";
+
 import { Product } from "@/types/product";
 
 interface ProductCardProps {

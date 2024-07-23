@@ -1,11 +1,11 @@
 import { createFileRoute, useLoaderData } from "@tanstack/react-router";
-import { fetchCategories } from "@/api/categoryApi";
 
-import Navbar from "@/components/ui/navbar";
-import Container from "@/components/ui/container";
-import ProductCatalog from "@/components/product-catalog";
-import Footer from "@/components/ui/footer";
+import { fetchCategories } from "@/api/categoryApi";
 import NotFound from "@/components/not-found";
+import ProductCatalog from "@/components/product-catalog";
+import Container from "@/components/ui/container";
+import Footer from "@/components/ui/footer";
+import Navbar from "@/components/ui/navbar";
 
 export const Route = createFileRoute("/")({
   component: Index,

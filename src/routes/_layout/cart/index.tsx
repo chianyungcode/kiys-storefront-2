@@ -1,9 +1,10 @@
+import { Link, createFileRoute } from "@tanstack/react-router";
+import { X } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import Container from "@/components/ui/container";
 import QuantityCount from "@/components/ui/quantity-count";
 import { formatToRupiah } from "@/utils/currency-format";
-import { Link, createFileRoute } from "@tanstack/react-router";
-import { X } from "lucide-react";
 
 const CartPage = () => {
   const price = formatToRupiah(1800000);

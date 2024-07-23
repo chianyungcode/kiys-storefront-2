@@ -1,8 +1,9 @@
+import { createFileRoute, useLoaderData } from "@tanstack/react-router";
+
 import { fetchCategories } from "@/api/categoryApi";
 import NotFound from "@/components/not-found";
 import ProductCatalog from "@/components/product-catalog";
 import Container from "@/components/ui/container";
-import { createFileRoute, useLoaderData } from "@tanstack/react-router";
 
 const ProductsPage = () => {
   const { categories } = useLoaderData({ from: "/_layout/products/" });
