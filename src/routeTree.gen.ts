@@ -14,11 +14,13 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as LayoutImport } from './routes/_layout'
+import { Route as IndexImport } from './routes/index'
 import { Route as LayoutProfileIndexImport } from './routes/_layout/profile/index'
 import { Route as LayoutProductsIndexImport } from './routes/_layout/products/index'
 import { Route as LayoutMouseIndexImport } from './routes/_layout/mouse/index'
 import { Route as LayoutKeyboardsIndexImport } from './routes/_layout/keyboards/index'
 import { Route as LayoutHeadphoneIndexImport } from './routes/_layout/headphone/index'
+import { Route as LayoutCheckoutIndexImport } from './routes/_layout/checkout/index'
 import { Route as LayoutCartIndexImport } from './routes/_layout/cart/index'
 import { Route as LayoutAccessoriesIndexImport } from './routes/_layout/accessories/index'
 import { Route as LayoutProductsProductSlugRouteImport } from './routes/_layout/products/$productSlug/route'
@@ -26,7 +28,6 @@ import { Route as LayoutProductsProductSlugRouteImport } from './routes/_layout/
 // Create Virtual Routes
 
 const AboutLazyImport = createFileRoute('/about')()
-const IndexLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
 
@@ -40,10 +41,10 @@ const LayoutRoute = LayoutImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const IndexLazyRoute = IndexLazyImport.update({
+const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+} as any)
 
 const LayoutProfileIndexRoute = LayoutProfileIndexImport.update({
   path: '/profile/',
@@ -67,6 +68,11 @@ const LayoutKeyboardsIndexRoute = LayoutKeyboardsIndexImport.update({
 
 const LayoutHeadphoneIndexRoute = LayoutHeadphoneIndexImport.update({
   path: '/headphone/',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutCheckoutIndexRoute = LayoutCheckoutIndexImport.update({
+  path: '/checkout/',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -94,7 +100,7 @@ declare module '@tanstack/react-router' {
       id: '/'
       path: '/'
       fullPath: '/'
-      preLoaderRoute: typeof IndexLazyImport
+      preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
     '/_layout': {
@@ -130,6 +136,13 @@ declare module '@tanstack/react-router' {
       path: '/cart'
       fullPath: '/cart'
       preLoaderRoute: typeof LayoutCartIndexImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/checkout/': {
+      id: '/_layout/checkout/'
+      path: '/checkout'
+      fullPath: '/checkout'
+      preLoaderRoute: typeof LayoutCheckoutIndexImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/headphone/': {
@@ -173,11 +186,12 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 export const routeTree = rootRoute.addChildren({
-  IndexLazyRoute,
+  IndexRoute,
   LayoutRoute: LayoutRoute.addChildren({
     LayoutProductsProductSlugRouteRoute,
     LayoutAccessoriesIndexRoute,
     LayoutCartIndexRoute,
+    LayoutCheckoutIndexRoute,
     LayoutHeadphoneIndexRoute,
     LayoutKeyboardsIndexRoute,
     LayoutMouseIndexRoute,
@@ -201,7 +215,7 @@ export const routeTree = rootRoute.addChildren({
       ]
     },
     "/": {
-      "filePath": "index.lazy.tsx"
+      "filePath": "index.tsx"
     },
     "/_layout": {
       "filePath": "_layout.tsx",
@@ -209,6 +223,7 @@ export const routeTree = rootRoute.addChildren({
         "/_layout/products/$productSlug",
         "/_layout/accessories/",
         "/_layout/cart/",
+        "/_layout/checkout/",
         "/_layout/headphone/",
         "/_layout/keyboards/",
         "/_layout/mouse/",
@@ -229,6 +244,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_layout/cart/": {
       "filePath": "_layout/cart/index.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/checkout/": {
+      "filePath": "_layout/checkout/index.tsx",
       "parent": "/_layout"
     },
     "/_layout/headphone/": {

@@ -1,4 +1,7 @@
 /** @type {import('tailwindcss').Config} */
+import keepPreset from "keep-react/preset";
+
+// eslint-disable-next-line no-undef
 module.exports = {
   darkMode: ["class"],
   content: [
@@ -6,7 +9,9 @@ module.exports = {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    "node_modules/keep-react/**/*.{js,jsx,ts,tsx}", // Related to keep-react depedency
   ],
+  presets: [keepPreset],
   prefix: "",
   theme: {
     container: {
@@ -78,5 +83,6 @@ module.exports = {
       sans: ["ui-sans-serif", "system-ui"],
     },
   },
+  // eslint-disable-next-line no-undef
   plugins: [require("tailwindcss-animate")],
 };

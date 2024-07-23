@@ -9,22 +9,33 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/ui/container";
+import QuantityCount from "@/components/ui/quantity-count";
+import { Product } from "@/types/product";
 import { formatToRupiah } from "@/utils/currency-format";
+import { capitalizationFirstLetter } from "@/utils/string-format";
 import {
   Link,
   createFileRoute,
   notFound,
   useLoaderData,
+  useLocation,
+  useParams,
 } from "@tanstack/react-router";
 import { Heart, ShoppingBag } from "lucide-react";
 
 const ProductDetailsPage = () => {
   const { product } = useLoaderData({ from: "/_layout/products/$productSlug" });
-
-  const { data } = product;
+  const { data }: { data: Product } = product;
   const productPrice = formatToRupiah(data.price);
 
-  console.log("product dari loader:", data);
+  const params = useParams({ from: "/_layout/products/$productSlug" });
+  const { pathname } = useLocation();
+  const splittedPathname = pathname.split("/").slice(1, 3);
+
+  const isParamsActive =
+    params.productSlug === splittedPathname[1]
+      ? "font-bold text-black"
+      : "font-base";
 
   return (
     <Container>
@@ -39,7 +50,20 @@ const ProductDetailsPage = () => {
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink asChild>
-                <Link to="/">Home</Link>
+                <Link to={`/${splittedPathname[0]}`}>
+                  {capitalizationFirstLetter(splittedPathname[0])}
+                </Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link
+                  to={`/${splittedPathname[0]}/${splittedPathname[1]}`}
+                  className={isParamsActive}
+                >
+                  {data.name}
+                </Link>
               </BreadcrumbLink>
             </BreadcrumbItem>
           </BreadcrumbList>
@@ -47,7 +71,12 @@ const ProductDetailsPage = () => {
         <div className="grid grid-cols-2 gap-x-8">
           <div className="space-y-4 py-4">
             <div className="overflow-hidden rounded-3xl">
-              <img src="/public/images/image.webp" alt="" />
+              {data.images && data.images[0] && (
+                <img
+                  src={data.images[0].url || "/public/images/image.webp"}
+                  alt="product-image-1"
+                />
+              )}
             </div>
             <div className="grid grid-cols-4 gap-x-2">
               <div className="overflow-hidden rounded-lg">
@@ -100,14 +129,22 @@ const ProductDetailsPage = () => {
                   <Button className="bg-[#323334]">Linear Switch</Button>
                 </div>
               </div>
-              <div className="border border-gray-200 rounded-2xl flex gap-x-2 px-6 py-4">
-                <Button className="bg-[#D92A36] h-16 w-full flex gap-x-2 items-center rounded-xl">
-                  <ShoppingBag />
-                  <h2 className="text-lg">Add to cart</h2>
-                </Button>
-                <Button className="h-16 p-6 rounded-xl">
-                  <Heart />
-                </Button>
+              <div className="border border-gray-200 rounded-2xl flex flex-col gap-y-2 px-6 py-4">
+                <div className="flex items-center gap-x-4 w-full">
+                  <div className="flex-grow">
+                    <QuantityCount inPopoverCart={false} />
+                  </div>
+                  <p className="whitespace-nowrap">Stok sisa 8</p>
+                </div>
+                <div className="flex w-full gap-x-2">
+                  <Button className="bg-[#D92A36] h-16 w-full flex gap-x-2 items-center rounded-xl">
+                    <ShoppingBag />
+                    <h2 className="text-lg">Add to cart</h2>
+                  </Button>
+                  <Button className="h-16 p-6 rounded-xl">
+                    <Heart />
+                  </Button>
+                </div>
               </div>
             </div>
           </div>

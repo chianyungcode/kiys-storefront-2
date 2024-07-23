@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { CircleUserRound, Search, ShoppingCart } from "lucide-react";
+import { CircleUserRound, Search } from "lucide-react";
+import PopoverCart from "./popover-cart";
 
 const Navbar = () => {
   return (
@@ -13,6 +14,7 @@ const Navbar = () => {
       </Link>
       <nav className="flex gap-x-2">
         <ul className="flex gap-x-8 font-sora font-medium">
+          <Link to="/products">All Products</Link>
           <Link to="/keyboards">Keyboard</Link>
           <Link to="/mouse">Mouse</Link>
           <Link to="/headphone">Headphone</Link>
@@ -21,8 +23,7 @@ const Navbar = () => {
       </nav>
       <div className="flex gap-x-4">
         <Search />
-        <ShoppingCart />
-
+        <PopoverCart />
         <Link to="/profile">
           <CircleUserRound />
         </Link>
