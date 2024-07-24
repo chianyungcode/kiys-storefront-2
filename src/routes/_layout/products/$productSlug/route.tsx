@@ -19,6 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import Container from "@/components/ui/container";
 import QuantityCount from "@/components/ui/quantity-count";
+import { Image } from "@/types/image";
 import { Product } from "@/types/product";
 import { formatToRupiah } from "@/utils/currency-format";
 import { capitalizationFirstLetter } from "@/utils/string-format";
@@ -71,26 +72,25 @@ const ProductDetailsPage = () => {
         <div className="grid grid-cols-2 gap-x-8">
           <div className="space-y-4 py-4">
             <div className="overflow-hidden rounded-3xl">
-              {data.images && data.images[0] && (
+              <div className="aspect-square">
                 <img
-                  src={data.images[0].url || "/public/images/image.webp"}
+                  src={data.images?.[0]?.url || "/public/images/image.webp"}
                   alt="product-image-1"
+                  className="w-full h-full object-cover"
                 />
-              )}
+              </div>
             </div>
-            <div className="grid grid-cols-4 gap-x-2">
-              <div className="overflow-hidden rounded-lg">
-                <img src="/public/images/image.webp" alt="" />
-              </div>
-              <div className="overflow-hidden rounded-lg">
-                <img src="/public/images/image.webp" alt="" />
-              </div>
-              <div className="overflow-hidden rounded-lg">
-                <img src="/public/images/image.webp" alt="" />
-              </div>
-              <div className="overflow-hidden rounded-lg">
-                <img src="/public/images/image.webp" alt="" />
-              </div>
+            <div className="grid grid-cols-4 gap-2">
+              {data.images &&
+                data.images.map((image: Image) => (
+                  <div className="overflow-hidden rounded-lg">
+                    <img
+                      src={image.url || "/public/images/image.webp"}
+                      alt=""
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                ))}
             </div>
           </div>
           <div className="space-y-20 py-4">
@@ -98,7 +98,7 @@ const ProductDetailsPage = () => {
               <h1 className="text-2xl font-sora font-semibold text-[#323334] ">
                 {data.name}
               </h1>
-              <div>KIYS SK9831-31</div>
+              <p className="text-xs font-medium">{data.sku.toUpperCase()}</p>
             </div>
             <div className="space-y-8">
               <p className="text-5xl font-sora font-semibold text-[#323334]">

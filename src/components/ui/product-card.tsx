@@ -9,12 +9,14 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
+  console.log("Product from product-card", product);
+
   return (
     <div className="group cursor-pointer rounded-xl space-y-4">
       {/* Images and actions */}
       <div className="aspect-square rounded-xl bg-gray-100 relative">
         <img
-          src={product.images?.[0]?.url || "public/images/image.webp"}
+          src={product.images?.[0]?.url || "/public/images/image.webp"}
           alt="Image"
           className="aspect-square object-cover rounded-2xl"
         />
