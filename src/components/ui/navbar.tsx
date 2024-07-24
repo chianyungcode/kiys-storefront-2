@@ -19,7 +19,7 @@ const Navbar = () => {
           <Link to="/keyboards">Keyboard</Link>
           <Link to="/mouse">Mouse</Link>
           <Link to="/headphone">Headphone</Link>
-          <Link to="/accessories">Accessories</Link>
+          <Link to="/tws">TWS</Link>
         </ul>
       </nav>
       <div className="flex gap-x-4">

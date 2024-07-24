@@ -15,6 +15,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
+import { Route as LayoutTwsIndexImport } from './routes/_layout/tws/index'
 import { Route as LayoutProfileIndexImport } from './routes/_layout/profile/index'
 import { Route as LayoutProductsIndexImport } from './routes/_layout/products/index'
 import { Route as LayoutMouseIndexImport } from './routes/_layout/mouse/index'
@@ -22,7 +23,6 @@ import { Route as LayoutKeyboardsIndexImport } from './routes/_layout/keyboards/
 import { Route as LayoutHeadphoneIndexImport } from './routes/_layout/headphone/index'
 import { Route as LayoutCheckoutIndexImport } from './routes/_layout/checkout/index'
 import { Route as LayoutCartIndexImport } from './routes/_layout/cart/index'
-import { Route as LayoutAccessoriesIndexImport } from './routes/_layout/accessories/index'
 import { Route as LayoutProductsProductSlugRouteImport } from './routes/_layout/products/$productSlug/route'
 
 // Create Virtual Routes
@@ -44,6 +44,11 @@ const LayoutRoute = LayoutImport.update({
 const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const LayoutTwsIndexRoute = LayoutTwsIndexImport.update({
+  path: '/tws/',
+  getParentRoute: () => LayoutRoute,
 } as any)
 
 const LayoutProfileIndexRoute = LayoutProfileIndexImport.update({
@@ -78,11 +83,6 @@ const LayoutCheckoutIndexRoute = LayoutCheckoutIndexImport.update({
 
 const LayoutCartIndexRoute = LayoutCartIndexImport.update({
   path: '/cart/',
-  getParentRoute: () => LayoutRoute,
-} as any)
-
-const LayoutAccessoriesIndexRoute = LayoutAccessoriesIndexImport.update({
-  path: '/accessories/',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -122,13 +122,6 @@ declare module '@tanstack/react-router' {
       path: '/products/$productSlug'
       fullPath: '/products/$productSlug'
       preLoaderRoute: typeof LayoutProductsProductSlugRouteImport
-      parentRoute: typeof LayoutImport
-    }
-    '/_layout/accessories/': {
-      id: '/_layout/accessories/'
-      path: '/accessories'
-      fullPath: '/accessories'
-      preLoaderRoute: typeof LayoutAccessoriesIndexImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/cart/': {
@@ -180,6 +173,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutProfileIndexImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/tws/': {
+      id: '/_layout/tws/'
+      path: '/tws'
+      fullPath: '/tws'
+      preLoaderRoute: typeof LayoutTwsIndexImport
+      parentRoute: typeof LayoutImport
+    }
   }
 }
 
@@ -189,7 +189,6 @@ export const routeTree = rootRoute.addChildren({
   IndexRoute,
   LayoutRoute: LayoutRoute.addChildren({
     LayoutProductsProductSlugRouteRoute,
-    LayoutAccessoriesIndexRoute,
     LayoutCartIndexRoute,
     LayoutCheckoutIndexRoute,
     LayoutHeadphoneIndexRoute,
@@ -197,6 +196,7 @@ export const routeTree = rootRoute.addChildren({
     LayoutMouseIndexRoute,
     LayoutProductsIndexRoute,
     LayoutProfileIndexRoute,
+    LayoutTwsIndexRoute,
   }),
   AboutLazyRoute,
 })
@@ -221,14 +221,14 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_layout.tsx",
       "children": [
         "/_layout/products/$productSlug",
-        "/_layout/accessories/",
         "/_layout/cart/",
         "/_layout/checkout/",
         "/_layout/headphone/",
         "/_layout/keyboards/",
         "/_layout/mouse/",
         "/_layout/products/",
-        "/_layout/profile/"
+        "/_layout/profile/",
+        "/_layout/tws/"
       ]
     },
     "/about": {
@@ -236,10 +236,6 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_layout/products/$productSlug": {
       "filePath": "_layout/products/$productSlug/route.tsx",
-      "parent": "/_layout"
-    },
-    "/_layout/accessories/": {
-      "filePath": "_layout/accessories/index.tsx",
       "parent": "/_layout"
     },
     "/_layout/cart/": {
@@ -268,6 +264,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_layout/profile/": {
       "filePath": "_layout/profile/index.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/tws/": {
+      "filePath": "_layout/tws/index.tsx",
       "parent": "/_layout"
     }
   }

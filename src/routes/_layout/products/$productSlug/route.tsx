@@ -159,8 +159,6 @@ export const Route = createFileRoute("/_layout/products/$productSlug")({
   loader: async ({ params: { productSlug } }) => {
     const product = await fetchProduct(productSlug);
 
-    if (!product) throw notFound();
-
     return { product };
   },
   component: ProductDetailsPage,
