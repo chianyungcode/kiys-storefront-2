@@ -1,7 +1,6 @@
 import {
   Link,
   createFileRoute,
-  notFound,
   useLoaderData,
   useLocation,
   useParams,
