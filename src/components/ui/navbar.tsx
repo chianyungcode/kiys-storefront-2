@@ -25,7 +25,7 @@ const Navbar = () => {
       <div className="flex gap-x-4">
         <Search />
         <PopoverCart />
-        <Link to="/profile">
+        <Link to="/login">
           <CircleUserRound />
         </Link>
       </div>

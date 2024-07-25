@@ -16,9 +16,11 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
 import { Route as LayoutTwsIndexImport } from './routes/_layout/tws/index'
+import { Route as LayoutRegisterIndexImport } from './routes/_layout/register/index'
 import { Route as LayoutProfileIndexImport } from './routes/_layout/profile/index'
 import { Route as LayoutProductsIndexImport } from './routes/_layout/products/index'
 import { Route as LayoutMouseIndexImport } from './routes/_layout/mouse/index'
+import { Route as LayoutLoginIndexImport } from './routes/_layout/login/index'
 import { Route as LayoutKeyboardsIndexImport } from './routes/_layout/keyboards/index'
 import { Route as LayoutHeadphoneIndexImport } from './routes/_layout/headphone/index'
 import { Route as LayoutCheckoutIndexImport } from './routes/_layout/checkout/index'
@@ -51,6 +53,11 @@ const LayoutTwsIndexRoute = LayoutTwsIndexImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
+const LayoutRegisterIndexRoute = LayoutRegisterIndexImport.update({
+  path: '/register/',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
 const LayoutProfileIndexRoute = LayoutProfileIndexImport.update({
   path: '/profile/',
   getParentRoute: () => LayoutRoute,
@@ -63,6 +70,11 @@ const LayoutProductsIndexRoute = LayoutProductsIndexImport.update({
 
 const LayoutMouseIndexRoute = LayoutMouseIndexImport.update({
   path: '/mouse/',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutLoginIndexRoute = LayoutLoginIndexImport.update({
+  path: '/login/',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -152,6 +164,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutKeyboardsIndexImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/login/': {
+      id: '/_layout/login/'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LayoutLoginIndexImport
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/mouse/': {
       id: '/_layout/mouse/'
       path: '/mouse'
@@ -171,6 +190,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof LayoutProfileIndexImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/register/': {
+      id: '/_layout/register/'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof LayoutRegisterIndexImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/tws/': {
@@ -193,9 +219,11 @@ export const routeTree = rootRoute.addChildren({
     LayoutCheckoutIndexRoute,
     LayoutHeadphoneIndexRoute,
     LayoutKeyboardsIndexRoute,
+    LayoutLoginIndexRoute,
     LayoutMouseIndexRoute,
     LayoutProductsIndexRoute,
     LayoutProfileIndexRoute,
+    LayoutRegisterIndexRoute,
     LayoutTwsIndexRoute,
   }),
   AboutLazyRoute,
@@ -225,9 +253,11 @@ export const routeTree = rootRoute.addChildren({
         "/_layout/checkout/",
         "/_layout/headphone/",
         "/_layout/keyboards/",
+        "/_layout/login/",
         "/_layout/mouse/",
         "/_layout/products/",
         "/_layout/profile/",
+        "/_layout/register/",
         "/_layout/tws/"
       ]
     },
@@ -254,6 +284,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_layout/keyboards/index.tsx",
       "parent": "/_layout"
     },
+    "/_layout/login/": {
+      "filePath": "_layout/login/index.tsx",
+      "parent": "/_layout"
+    },
     "/_layout/mouse/": {
       "filePath": "_layout/mouse/index.tsx",
       "parent": "/_layout"
@@ -264,6 +298,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_layout/profile/": {
       "filePath": "_layout/profile/index.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/register/": {
+      "filePath": "_layout/register/index.tsx",
       "parent": "/_layout"
     },
     "/_layout/tws/": {
