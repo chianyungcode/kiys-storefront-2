@@ -9,8 +9,6 @@ interface ProductCardProps {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  console.log("Product from product-card", product);
-
   return (
     <div className="group cursor-pointer rounded-xl space-y-4">
       {/* Images and actions */}

@@ -23,6 +23,8 @@ function Index() {
   const { categories } = useLoaderData({ from: "/" });
   const { data } = categories;
 
+  console.log("From index", data);
+
   return (
     <div className="relative bg-[#FDFEFE]">
       <Navbar />

@@ -12,8 +12,6 @@ interface CategoryRowProps {
 }
 
 const CategoryRow = ({ category, inCategoryPage }: CategoryRowProps) => {
-  console.log("From category row:");
-
   return (
     <li className="space-y-8">
       {inCategoryPage ? (
