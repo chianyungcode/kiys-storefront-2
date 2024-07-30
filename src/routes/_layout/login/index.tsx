@@ -1,9 +1,22 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
 
-import AuthForm from "@/components/auth-form";
+import LoginForm from "@/components/auth/login-form";
 import Container from "@/components/ui/container";
+import { useAuth } from "@/context/auth-provider";
 
 const LoginPage = () => {
+  const { token } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(token);
+
+    if (token) {
+      navigate({ to: "/products" });
+    }
+  }, [token, navigate]);
+
   return (
     <Container className="grid grid-cols-2 gap-x-10">
       <div className="flex flex-col items-center justify-center space-y-24">
@@ -28,7 +41,7 @@ const LoginPage = () => {
             <h1 className="font-sora font-semibold">Login to your account</h1>
           </div>
           <div className="bg-white rounded-t-md rounded-b-2xl w-full flex items-start py-8 px-6">
-            <AuthForm isLoginForm={true} />
+            <LoginForm />
           </div>
         </div>
       </div>

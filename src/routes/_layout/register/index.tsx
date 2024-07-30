@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
-import AuthForm from "@/components/auth-form";
+import RegisterForm from "@/components/auth/register-form";
 import Container from "@/components/ui/container";
 
 const RegisterPage = () => {
@@ -17,7 +17,7 @@ const RegisterPage = () => {
             <h1 className="font-sora font-semibold">Register account</h1>
           </div>
           <div className="bg-white rounded-t-md rounded-b-2xl w-full flex items-start py-8 px-6">
-            <AuthForm isLoginForm={false} />
+            <RegisterForm />
           </div>
         </div>
       </div>
