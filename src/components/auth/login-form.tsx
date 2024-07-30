@@ -7,11 +7,11 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { Input } from "../ui/input";
 
 import { useAuth } from "@/context/auth-provider";
-import { axiosApi } from "@/lib/axios";
+import { axiosAuth } from "@/lib/axios";
 import { authenticationSchema } from "@/lib/zod-schema";
 
 const LoginForm = () => {
-  const { setToken } = useAuth();
+  const { setAccessToken } = useAuth();
 
   const form = useForm<z.infer<typeof authenticationSchema.login>>({
     resolver: zodResolver(authenticationSchema.login),
@@ -26,15 +26,12 @@ const LoginForm = () => {
     password,
   }: z.infer<typeof authenticationSchema.login>) => {
     try {
-      const response = await axiosApi.post(
-        `${import.meta.env.VITE_BACKEND_URL}/api/auth/login`,
-        {
-          email,
-          password,
-        }
-      );
+      const response = await axiosAuth.post("/auth/login", {
+        email,
+        password,
+      });
 
-      setToken(response.data.data.auth.accessToken);
+      setAccessToken(response.data.data.auth.accessToken);
     } catch (error) {
       console.log(error);
     }

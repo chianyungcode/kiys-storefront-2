@@ -1,4 +1,7 @@
 import { notFound } from "@tanstack/react-router";
+import axios from "axios";
+
+import { axiosInstance } from "@/lib/axios";
 
 export const fetchProducts = async () => {
   const response = await fetch(
@@ -15,16 +18,13 @@ export const fetchProducts = async () => {
 };
 
 export const fetchProduct = async (slug: string) => {
-  const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_URL}/api/products/${slug}`
-  );
-
-  // TODO: Disini harusnya ketika !response.ok throw nya Error jaringan
-  if (!response.ok) throw notFound();
-
-  const product = await response.json();
-
-  if (!product) throw notFound();
-
-  return product;
+  try {
+    const response = await axiosInstance.get(`products/${slug}`);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 404) {
+      throw notFound();
+    }
+    throw new Error("Terjadi kesalahan jaringan");
+  }
 };

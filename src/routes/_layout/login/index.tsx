@@ -6,16 +6,16 @@ import Container from "@/components/ui/container";
 import { useAuth } from "@/context/auth-provider";
 
 const LoginPage = () => {
-  const { token } = useAuth();
+  const { accessToken } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(token);
+    console.log(accessToken);
 
-    if (token) {
+    if (accessToken) {
       navigate({ to: "/products" });
     }
-  }, [token, navigate]);
+  }, [accessToken, navigate]);
 
   return (
     <Container className="grid grid-cols-2 gap-x-10">

@@ -9,12 +9,12 @@ import { Button } from "../ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 
 import { useAuth } from "@/context/auth-provider";
-import { axiosApi } from "@/lib/axios";
+import { axiosAuth } from "@/lib/axios";
 import { cn } from "@/lib/utils";
 import { authenticationSchema } from "@/lib/zod-schema";
 
 const RegisterForm = () => {
-  const { setToken } = useAuth();
+  const { setAccessToken } = useAuth();
   const [isPasswordValid, setIsPasswordValid] = useState({
     length: false,
     specialChar: false,
@@ -56,7 +56,7 @@ const RegisterForm = () => {
     address,
   }: z.infer<typeof authenticationSchema.register>) => {
     try {
-      const response = await axiosApi.post("/auth/register", {
+      const response = await axiosAuth.post("/auth/register", {
         email,
         password,
         confirmPassword,
@@ -66,7 +66,7 @@ const RegisterForm = () => {
       });
 
       console.log(response.data);
-      setToken(response.data.data.auth.token);
+      setAccessToken(response.data.data.auth.accessToken);
     } catch (error) {
       console.log(error);
     }

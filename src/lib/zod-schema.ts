@@ -6,6 +6,7 @@ export const authenticationSchema = {
       firstName: z.string().min(1, { message: "Minimum 1 character" }),
       lastName: z.string().min(1, { message: "Minimum 1 character" }),
       email: z.string().email(),
+      address: z.string(),
       password: z
         .string()
         .regex(
@@ -30,5 +31,21 @@ export const authenticationSchema = {
   login: z.object({
     email: z.string().email(),
     password: z.string().min(8),
+  }),
+};
+
+export const checkoutSchema = {
+  contact: z.object({
+    email: z.string().email(),
+    phone: z.string(),
+  }),
+  delivery: z.object({
+    country: z.string(),
+    firstName: z.string().min(1),
+    lastName: z.string().min(1),
+    address: z.string().min(1),
+    city: z.string().min(1),
+    province: z.string().min(1),
+    postalCode: z.string().min(1),
   }),
 };
