@@ -34,7 +34,7 @@ const OrderPage = () => {
       <h1 className="text-4xl font-semibold font-sora">Cart</h1>
       <div className="flex gap-x-10">
         <div className="flex flex-grow py-4 flex-col gap-y-8">
-          {[1, 2].map((item, index) => (
+          {[1, 2].map((_, index) => (
             <div key={index} className="flex gap-x-6 w-full">
               <img src="/public/images/image.webp" alt="" className="h-32" />
               <div className="flex-col justify-between space-y-4 w-full">
