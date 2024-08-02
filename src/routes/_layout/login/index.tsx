@@ -29,12 +29,6 @@ const LoginPage = () => {
     }
   }, [setAccessToken, accessToken, navigate]);
 
-  // useEffect(() => {
-  //   if (accessToken) {
-  //     navigate({ to: "/products" });
-  //   }
-  // }, [accessToken, navigate]);
-
   return (
     <Container className="grid grid-cols-2 gap-x-10">
       <div className="flex flex-col items-center justify-center space-y-24">
@@ -50,7 +44,7 @@ const LoginPage = () => {
       </div>
       <div className="relative bg-red-500 rounded-3xl overflow-hidden">
         <img
-          src="/public/images/keyboards.webp"
+          src="/images/keyboards.webp"
           alt="bg-image"
           className="h-[60rem] object-cover "
         />

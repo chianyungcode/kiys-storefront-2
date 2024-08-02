@@ -79,10 +79,6 @@ const ProductDetailsPage = () => {
     },
   });
 
-  useEffect(() => {
-    form.setValue("orderItems.0.quantity", numberQuantity);
-  }, [numberQuantity, form]);
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log("Form submitted", values); // Tambahkan log untuk memastikan onSubmit dipanggil
 
@@ -102,6 +98,10 @@ const ProductDetailsPage = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    form.setValue("orderItems.0.quantity", numberQuantity);
+  }, [numberQuantity, form]);
 
   return (
     <Container>

@@ -6,7 +6,6 @@ export const authenticationSchema = {
       firstName: z.string().min(1, { message: "Minimum 1 character" }),
       lastName: z.string().min(1, { message: "Minimum 1 character" }),
       email: z.string().email(),
-      address: z.string(),
       password: z
         .string()
         .regex(

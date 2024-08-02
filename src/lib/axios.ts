@@ -1,10 +1,7 @@
 import axios from "axios";
 
 export const axiosInstance = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000/api"
-      : "https://kiys-api.chianyung.dev/api",
+  baseURL: import.meta.env.VITE_BACKEND_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -12,10 +9,7 @@ export const axiosInstance = axios.create({
 });
 
 export const axiosAuth = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000/api"
-      : "https://kiys-api.chianyung.dev/api",
+  baseURL: import.meta.env.VITE_BACKEND_URL,
   headers: {
     "Content-Type": "application/json",
   },

@@ -14,7 +14,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       {/* Images and actions */}
       <div className="aspect-square rounded-xl bg-gray-100 relative">
         <img
-          src={product.images?.[0]?.url || "/public/images/image.webp"}
+          src={product.images?.[0]?.url || "/images/image.webp"}
           alt="Image"
           className="aspect-square object-cover rounded-2xl"
         />

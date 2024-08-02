@@ -30,7 +30,6 @@ const RegisterForm = () => {
       confirmPassword: "",
       firstName: "",
       lastName: "",
-      address: "",
     },
   });
 
@@ -53,7 +52,6 @@ const RegisterForm = () => {
     confirmPassword,
     firstName,
     lastName,
-    address,
   }: z.infer<typeof authenticationSchema.register>) => {
     try {
       const response = await axiosAuth.post("/auth/register", {
@@ -62,7 +60,6 @@ const RegisterForm = () => {
         confirmPassword,
         firstName,
         lastName,
-        address,
       });
 
       console.log(response.data);
@@ -119,7 +116,7 @@ const RegisterForm = () => {
               <FormItem className="space-y-1">
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="Password" {...field} />
+                  <Input placeholder="Password" type="password" {...field} />
                 </FormControl>
               </FormItem>
             )}
@@ -131,19 +128,11 @@ const RegisterForm = () => {
               <FormItem className="space-y-1">
                 <FormLabel>Confirm Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="Confirm Password" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="address"
-            render={({ field }) => (
-              <FormItem className="space-y-1">
-                <FormLabel>Address</FormLabel>
-                <FormControl>
-                  <Input placeholder="Address" {...field} />
+                  <Input
+                    placeholder="Confirm Password"
+                    type="password"
+                    {...field}
+                  />
                 </FormControl>
               </FormItem>
             )}
