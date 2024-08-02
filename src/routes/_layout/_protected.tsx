@@ -28,7 +28,6 @@ const ProtectedLayout = () => {
 
   return (
     <div>
-      <p>Protected Layout</p>
       <Outlet />
     </div>
   );

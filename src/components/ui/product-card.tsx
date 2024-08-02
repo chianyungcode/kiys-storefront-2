@@ -30,7 +30,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <div className="space-y-4">
         <p className="font-semibold text-lg">{product.name}</p>
         <p className="font-normal text-gray-600 font-sans">
-          QMK/VIA Wireless Custom Mechanical Keyboard
+          {product.description}
         </p>
         <p className="font-sans">Rp 1.300.000</p>
       </div>

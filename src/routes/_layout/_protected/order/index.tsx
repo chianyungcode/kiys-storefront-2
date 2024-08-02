@@ -7,15 +7,35 @@ import QuantityCount from "@/components/ui/quantity-count";
 import { formatToRupiah } from "@/utils/currency-format";
 
 const OrderPage = () => {
+  // const { userId } = useAuth();
+  // const [order, setOrder] = useState(null);
   const price = formatToRupiah(1800000);
+
+  // useEffect(() => {
+  //   const fetchOrder = async () => {
+  //     try {
+  //       if (userId) {
+  //         const orderData = await fetchOrderByUserId(userId);
+
+  //         setOrder(orderData);
+  //       } else {
+  //         console.error("UserId tidak tersedia");
+  //       }
+  //     } catch (error) {
+  //       console.error("Gagal mengambil data pesanan:", error);
+  //     }
+  //   };
+
+  //   fetchOrder();
+  // }, [userId]);
 
   return (
     <Container className="space-y-6">
       <h1 className="text-4xl font-semibold font-sora">Cart</h1>
       <div className="flex gap-x-10">
         <div className="flex flex-grow py-4 flex-col gap-y-8">
-          {[1, 2].map(() => (
-            <div className="flex gap-x-6 w-full">
+          {[1, 2].map((item, index) => (
+            <div key={index} className="flex gap-x-6 w-full">
               <img src="/public/images/image.webp" alt="" className="h-32" />
               <div className="flex-col justify-between space-y-4 w-full">
                 <div className="flex justify-between">
@@ -32,6 +52,8 @@ const OrderPage = () => {
                 </p>
                 <div className="flex justify-between items-center">
                   <QuantityCount
+                    value={1}
+                    onChange={() => {}}
                     inPopoverCart={false}
                     className="h-10 rounded-none px-0"
                   />

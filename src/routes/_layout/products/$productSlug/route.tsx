@@ -4,6 +4,7 @@ import {
   createFileRoute,
   useLoaderData,
   useLocation,
+  useNavigate,
   useParams,
 } from "@tanstack/react-router";
 import { Heart, ShoppingBag } from "lucide-react";
@@ -44,7 +45,8 @@ const formSchema = z.object({
 
 const ProductDetailsPage = () => {
   const [numberQuantity, setNumberQuantity] = useState(1);
-  const { userId } = useAuth();
+  const { userId, accessToken } = useAuth();
+  const navigate = useNavigate();
 
   const { product } = useLoaderData({ from: "/_layout/products/$productSlug" });
   const { data }: { data: Product } = product;
@@ -82,6 +84,12 @@ const ProductDetailsPage = () => {
   }, [numberQuantity, form]);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log("Form submitted", values); // Tambahkan log untuk memastikan onSubmit dipanggil
+
+    if (!accessToken) {
+      navigate({ to: "/login" });
+    }
+
     try {
       const response = await axiosInstance.post("/orders", {
         isPaid: values.isPaid,
