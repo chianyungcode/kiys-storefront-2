@@ -30,6 +30,8 @@ const PopoverCart = () => {
             <h1 className="font-medium">KIYS SK-9391</h1>
             <p className="text-sm">Linear Switch / Red</p>
             <QuantityCount
+              value={1}
+              onChange={() => {}}
               className="bg-transparent h-8 text-sm text-red-500"
               inPopoverCart={true}
             />
