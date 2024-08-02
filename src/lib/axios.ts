@@ -12,7 +12,10 @@ export const axiosInstance = axios.create({
 });
 
 export const axiosAuth = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL:
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:3000/api"
+      : "https://kiys-api.chianyung.dev/api",
   headers: {
     "Content-Type": "application/json",
   },
