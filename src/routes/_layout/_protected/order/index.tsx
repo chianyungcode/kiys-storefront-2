@@ -6,7 +6,7 @@ import Container from "@/components/ui/container";
 import QuantityCount from "@/components/ui/quantity-count";
 import { formatToRupiah } from "@/utils/currency-format";
 
-const CartPage = () => {
+const OrderPage = () => {
   const price = formatToRupiah(1800000);
 
   return (
@@ -81,6 +81,6 @@ const CartPage = () => {
   );
 };
 
-export const Route = createFileRoute("/_layout/cart/")({
-  component: CartPage,
+export const Route = createFileRoute("/_layout/_protected/order/")({
+  component: OrderPage,
 });

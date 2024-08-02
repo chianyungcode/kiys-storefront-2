@@ -15,6 +15,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Route as rootRoute } from './routes/__root'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
+import { Route as LayoutProtectedImport } from './routes/_layout/_protected'
 import { Route as LayoutTwsIndexImport } from './routes/_layout/tws/index'
 import { Route as LayoutRegisterIndexImport } from './routes/_layout/register/index'
 import { Route as LayoutProfileIndexImport } from './routes/_layout/profile/index'
@@ -24,8 +25,10 @@ import { Route as LayoutLoginIndexImport } from './routes/_layout/login/index'
 import { Route as LayoutKeyboardsIndexImport } from './routes/_layout/keyboards/index'
 import { Route as LayoutHeadphoneIndexImport } from './routes/_layout/headphone/index'
 import { Route as LayoutCheckoutIndexImport } from './routes/_layout/checkout/index'
-import { Route as LayoutCartIndexImport } from './routes/_layout/cart/index'
+import { Route as LayoutAccessoriesIndexImport } from './routes/_layout/accessories/index'
 import { Route as LayoutProductsProductSlugRouteImport } from './routes/_layout/products/$productSlug/route'
+import { Route as LayoutProtectedOrderIndexImport } from './routes/_layout/_protected/order/index'
+import { Route as LayoutProtectedForgotIndexImport } from './routes/_layout/_protected/forgot/index'
 
 // Create Virtual Routes
 
@@ -46,6 +49,11 @@ const LayoutRoute = LayoutImport.update({
 const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const LayoutProtectedRoute = LayoutProtectedImport.update({
+  id: '/_protected',
+  getParentRoute: () => LayoutRoute,
 } as any)
 
 const LayoutTwsIndexRoute = LayoutTwsIndexImport.update({
@@ -93,8 +101,8 @@ const LayoutCheckoutIndexRoute = LayoutCheckoutIndexImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
-const LayoutCartIndexRoute = LayoutCartIndexImport.update({
-  path: '/cart/',
+const LayoutAccessoriesIndexRoute = LayoutAccessoriesIndexImport.update({
+  path: '/accessories/',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -103,6 +111,18 @@ const LayoutProductsProductSlugRouteRoute =
     path: '/products/$productSlug',
     getParentRoute: () => LayoutRoute,
   } as any)
+
+const LayoutProtectedOrderIndexRoute = LayoutProtectedOrderIndexImport.update({
+  path: '/order/',
+  getParentRoute: () => LayoutProtectedRoute,
+} as any)
+
+const LayoutProtectedForgotIndexRoute = LayoutProtectedForgotIndexImport.update(
+  {
+    path: '/forgot/',
+    getParentRoute: () => LayoutProtectedRoute,
+  } as any,
+)
 
 // Populate the FileRoutesByPath interface
 
@@ -129,6 +149,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutLazyImport
       parentRoute: typeof rootRoute
     }
+    '/_layout/_protected': {
+      id: '/_layout/_protected'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof LayoutProtectedImport
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/products/$productSlug': {
       id: '/_layout/products/$productSlug'
       path: '/products/$productSlug'
@@ -136,11 +163,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutProductsProductSlugRouteImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/cart/': {
-      id: '/_layout/cart/'
-      path: '/cart'
-      fullPath: '/cart'
-      preLoaderRoute: typeof LayoutCartIndexImport
+    '/_layout/accessories/': {
+      id: '/_layout/accessories/'
+      path: '/accessories'
+      fullPath: '/accessories'
+      preLoaderRoute: typeof LayoutAccessoriesIndexImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/checkout/': {
@@ -206,6 +233,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutTwsIndexImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/_protected/forgot/': {
+      id: '/_layout/_protected/forgot/'
+      path: '/forgot'
+      fullPath: '/forgot'
+      preLoaderRoute: typeof LayoutProtectedForgotIndexImport
+      parentRoute: typeof LayoutProtectedImport
+    }
+    '/_layout/_protected/order/': {
+      id: '/_layout/_protected/order/'
+      path: '/order'
+      fullPath: '/order'
+      preLoaderRoute: typeof LayoutProtectedOrderIndexImport
+      parentRoute: typeof LayoutProtectedImport
+    }
   }
 }
 
@@ -214,8 +255,12 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
   LayoutRoute: LayoutRoute.addChildren({
+    LayoutProtectedRoute: LayoutProtectedRoute.addChildren({
+      LayoutProtectedForgotIndexRoute,
+      LayoutProtectedOrderIndexRoute,
+    }),
     LayoutProductsProductSlugRouteRoute,
-    LayoutCartIndexRoute,
+    LayoutAccessoriesIndexRoute,
     LayoutCheckoutIndexRoute,
     LayoutHeadphoneIndexRoute,
     LayoutKeyboardsIndexRoute,
@@ -248,8 +293,9 @@ export const routeTree = rootRoute.addChildren({
     "/_layout": {
       "filePath": "_layout.tsx",
       "children": [
+        "/_layout/_protected",
         "/_layout/products/$productSlug",
-        "/_layout/cart/",
+        "/_layout/accessories/",
         "/_layout/checkout/",
         "/_layout/headphone/",
         "/_layout/keyboards/",
@@ -264,12 +310,20 @@ export const routeTree = rootRoute.addChildren({
     "/about": {
       "filePath": "about.lazy.tsx"
     },
+    "/_layout/_protected": {
+      "filePath": "_layout/_protected.tsx",
+      "parent": "/_layout",
+      "children": [
+        "/_layout/_protected/forgot/",
+        "/_layout/_protected/order/"
+      ]
+    },
     "/_layout/products/$productSlug": {
       "filePath": "_layout/products/$productSlug/route.tsx",
       "parent": "/_layout"
     },
-    "/_layout/cart/": {
-      "filePath": "_layout/cart/index.tsx",
+    "/_layout/accessories/": {
+      "filePath": "_layout/accessories/index.tsx",
       "parent": "/_layout"
     },
     "/_layout/checkout/": {
@@ -307,6 +361,14 @@ export const routeTree = rootRoute.addChildren({
     "/_layout/tws/": {
       "filePath": "_layout/tws/index.tsx",
       "parent": "/_layout"
+    },
+    "/_layout/_protected/forgot/": {
+      "filePath": "_layout/_protected/forgot/index.tsx",
+      "parent": "/_layout/_protected"
+    },
+    "/_layout/_protected/order/": {
+      "filePath": "_layout/_protected/order/index.tsx",
+      "parent": "/_layout/_protected"
     }
   }
 }

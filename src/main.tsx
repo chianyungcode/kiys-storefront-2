@@ -16,7 +16,8 @@ const router = createRouter({
   context: {
     queryClient,
   },
-  defaultPreload: "intent",
+  // defaultPreload: "intent" (This is default when using Tanstack Query get from an example from the docs)
+  defaultPreload: false,
   // Since we're using React Query, we don't want loader calls to ever be stale
   // This will ensure that the loader is always called when the route is preloaded or visited
   defaultPreloadStaleTime: 0,

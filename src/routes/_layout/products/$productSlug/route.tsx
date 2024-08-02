@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Link,
   createFileRoute,
@@ -6,6 +7,9 @@ import {
   useParams,
 } from "@tanstack/react-router";
 import { Heart, ShoppingBag } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 import { fetchProduct } from "@/api/productApi";
 import NotFound from "@/components/not-found";
@@ -18,13 +22,30 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/ui/container";
+import { Form } from "@/components/ui/form";
 import QuantityCount from "@/components/ui/quantity-count";
+import { useAuth } from "@/context/auth-provider";
+import { axiosInstance } from "@/lib/axios";
 import { Image } from "@/types/image";
 import { Product } from "@/types/product";
 import { formatToRupiah } from "@/utils/currency-format";
 import { capitalizationFirstLetter } from "@/utils/string-format";
 
+const formSchema = z.object({
+  isPaid: z.boolean().default(false),
+  userId: z.string().uuid(),
+  orderItems: z.array(
+    z.object({
+      productId: z.string().uuid(),
+      quantity: z.number(),
+    })
+  ),
+});
+
 const ProductDetailsPage = () => {
+  const [numberQuantity, setNumberQuantity] = useState(1);
+  const { userId } = useAuth();
+
   const { product } = useLoaderData({ from: "/_layout/products/$productSlug" });
   const { data }: { data: Product } = product;
   const productPrice = formatToRupiah(data.price);
@@ -37,6 +58,42 @@ const ProductDetailsPage = () => {
     params.productSlug === splittedPathname[1]
       ? "font-bold text-black"
       : "font-base";
+
+  const onChangeQuantity = (value: number) => {
+    setNumberQuantity(value);
+  };
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      isPaid: false,
+      userId: userId || undefined,
+      orderItems: [
+        {
+          productId: data.id,
+          quantity: numberQuantity,
+        },
+      ],
+    },
+  });
+
+  useEffect(() => {
+    form.setValue("orderItems.0.quantity", numberQuantity);
+  }, [numberQuantity, form]);
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const response = await axiosInstance.post("/orders", {
+        isPaid: values.isPaid,
+        userId: values.userId,
+        orderItems: values.orderItems,
+      });
+
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Container>
@@ -105,7 +162,7 @@ const ProductDetailsPage = () => {
                 {productPrice}
               </p>
               <p className="text-[#5B5C5D]">{data.description}</p>
-              <div className="space-y-4" id="options">
+              {/* <div className="space-y-4" id="options">
                 <h2 className="font-sora font-medium">Switch Type</h2>
                 <div className="flex gap-2 flex-wrap">
                   <Button className="bg-[#323334]">Linear Switch</Button>
@@ -128,23 +185,35 @@ const ProductDetailsPage = () => {
                   <Button className="bg-[#323334]">Linear Switch</Button>
                   <Button className="bg-[#323334]">Linear Switch</Button>
                 </div>
-              </div>
+              </div> */}
               <div className="border border-gray-200 rounded-2xl flex flex-col gap-y-2 px-6 py-4">
                 <div className="flex items-center gap-x-4 w-full">
                   <div className="flex-grow">
-                    <QuantityCount inPopoverCart={false} />
+                    <QuantityCount
+                      inPopoverCart={false}
+                      value={numberQuantity}
+                      onChange={onChangeQuantity}
+                    />
                   </div>
                   <p className="whitespace-nowrap">Stok sisa 8</p>
                 </div>
-                <div className="flex w-full gap-x-2">
-                  <Button className="bg-[#D92A36] h-16 w-full flex gap-x-2 items-center rounded-xl">
-                    <ShoppingBag />
-                    <h2 className="text-lg">Add to cart</h2>
-                  </Button>
-                  <Button className="h-16 p-6 rounded-xl">
-                    <Heart />
-                  </Button>
-                </div>
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="w-full flex gap-x-2"
+                  >
+                    <Button
+                      type="submit"
+                      className="bg-[#D92A36] h-16 w-full flex gap-x-2 items-center rounded-xl"
+                    >
+                      <ShoppingBag />
+                      <h2 className="text-lg">Add to cart</h2>
+                    </Button>
+                    <Button className="h-16 p-6 rounded-xl">
+                      <Heart />
+                    </Button>
+                  </form>
+                </Form>
               </div>
             </div>
           </div>
@@ -157,7 +226,6 @@ const ProductDetailsPage = () => {
 export const Route = createFileRoute("/_layout/products/$productSlug")({
   loader: async ({ params: { productSlug } }) => {
     const product = await fetchProduct(productSlug);
-
     return { product };
   },
   component: ProductDetailsPage,

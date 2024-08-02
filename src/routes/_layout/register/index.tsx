@@ -1,9 +1,35 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
 
 import RegisterForm from "@/components/auth/register-form";
 import Container from "@/components/ui/container";
+import { useAuth } from "@/context/auth-provider";
+import { axiosAuth } from "@/lib/axios";
 
 const RegisterPage = () => {
+  const { accessToken, setAccessToken } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fecthMe = async () => {
+      try {
+        const response = await axiosAuth.post("/auth/refresh/token");
+        const token = response.data.data.accessToken;
+
+        setAccessToken(token);
+      } catch (error) {
+        console.log(error);
+        setAccessToken(null);
+      }
+    };
+
+    if (!accessToken) {
+      fecthMe();
+    } else {
+      navigate({ to: "/" });
+    }
+  }, [accessToken, setAccessToken, navigate]);
+
   return (
     <Container className="grid grid-cols-2 gap-x-10">
       <div className="relative bg-red-500 rounded-3xl overflow-hidden">

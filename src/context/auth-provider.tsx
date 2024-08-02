@@ -1,19 +1,22 @@
 import { InternalAxiosRequestConfig } from "axios";
-import { createContext, useContext, useLayoutEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 import { axiosInstance } from "@/lib/axios";
 
 interface AuthContextType {
   accessToken: string | null;
   setAccessToken: React.Dispatch<React.SetStateAction<string | null>>;
+  userId: string | null;
+  setUserId: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export const AuthContext = createContext<AuthContextType | null>(null);
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const authInterceptor = axiosInstance.interceptors.request.use(
       (config: InternalAxiosRequestConfig & { _retry?: boolean }) => {
         config.headers.Authorization =
@@ -29,9 +32,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => {
       axiosInstance.interceptors.request.eject(authInterceptor);
     };
-  }, [accessToken]); // Add token as a dependency
+  }, [accessToken]); // Add accessToken as a dependency
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const refreshInterceptor = axiosInstance.interceptors.response.use(
       (response) => response,
       async (error) => {
@@ -44,7 +47,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           try {
             const response = await axiosInstance.post("/auth/refresh/token");
 
-            setAccessToken(response.data.data.accessToken); // Ini sudah benar sesuai json
+            setUserId(response.data.data.userId);
+            setAccessToken(response.data.data.accessToken);
 
             originalRequest.headers["Authorization"] =
               `Bearer ${response.data.data.accessToken}`;
@@ -54,6 +58,8 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             return axiosInstance(originalRequest);
           } catch (error) {
             setAccessToken(null);
+            // TODO: Can't use useNavigate from @tanstack/react-router
+            window.location.href = "/login";
           }
         }
 
@@ -67,7 +73,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [setAccessToken]);
 
   return (
-    <AuthContext.Provider value={{ accessToken, setAccessToken }}>
+    <AuthContext.Provider
+      value={{ accessToken, setAccessToken, userId, setUserId }}
+    >
       {children}
     </AuthContext.Provider>
   );

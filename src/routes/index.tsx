@@ -1,4 +1,6 @@
 import { createFileRoute, useLoaderData } from "@tanstack/react-router";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
 
 import { fetchCategories } from "@/api/categoryApi";
 import NotFound from "@/components/not-found";
@@ -23,12 +25,34 @@ function Index() {
   const { categories } = useLoaderData({ from: "/" });
   const { data } = categories;
 
-  console.log("From index", data);
-
   return (
     <div className="relative bg-[#FDFEFE]">
       <Navbar />
-      <Container>
+      <Container className="space-y-20">
+        <Swiper
+          spaceBetween={50}
+          slidesPerView={1}
+          onSlideChange={() => console.log("slide change")}
+          onSwiper={(swiper) => console.log(swiper)}
+        >
+          <SwiperSlide>
+            <img
+              src="/public/images/keyboards.webp"
+              alt=""
+              className="rounded-2xl"
+            />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img src="/public/images/keyboards.webp" alt="" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img src="/public/images/keyboards.webp" alt="" />
+          </SwiperSlide>
+          <SwiperSlide>
+            <img src="/public/images/keyboards.webp" alt="" />
+          </SwiperSlide>
+        </Swiper>
+
         <ProductCatalog inCategoryPage={false} categories={data} />
       </Container>
       <Footer />

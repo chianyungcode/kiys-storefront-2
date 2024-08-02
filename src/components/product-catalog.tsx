@@ -11,8 +11,6 @@ const ProductCatalog: React.FC<ProductCatalogProps> = ({
   inCategoryPage,
   categories,
 }) => {
-  console.log(categories);
-
   return (
     <div className="font-sora space-y-16">
       <ul className="space-y-12">

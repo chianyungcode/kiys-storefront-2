@@ -4,18 +4,36 @@ import { useEffect } from "react";
 import LoginForm from "@/components/auth/login-form";
 import Container from "@/components/ui/container";
 import { useAuth } from "@/context/auth-provider";
+import { axiosAuth } from "@/lib/axios";
 
 const LoginPage = () => {
-  const { accessToken } = useAuth();
+  const { accessToken, setAccessToken } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(accessToken);
+    const fetchMe = async () => {
+      try {
+        const response = await axiosAuth.post("/auth/refresh/token");
+        const token = response.data.data.accessToken;
+        setAccessToken(token);
+      } catch (error) {
+        console.log(error);
+        setAccessToken(null);
+      }
+    };
 
-    if (accessToken) {
-      navigate({ to: "/products" });
+    if (!accessToken) {
+      fetchMe();
+    } else {
+      navigate({ to: "/" });
     }
-  }, [accessToken, navigate]);
+  }, [setAccessToken, accessToken, navigate]);
+
+  // useEffect(() => {
+  //   if (accessToken) {
+  //     navigate({ to: "/products" });
+  //   }
+  // }, [accessToken, navigate]);
 
   return (
     <Container className="grid grid-cols-2 gap-x-10">

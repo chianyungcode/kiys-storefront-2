@@ -1,29 +1,39 @@
 import { notFound } from "@tanstack/react-router";
 
 export const fetchCategories = async () => {
-  const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_URL}/api/categories`
-  );
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/categories`
+    );
 
-  if (!response.ok) throw notFound();
+    if (!response.ok) throw notFound();
 
-  const categories = await response.json();
+    const categories = await response.json();
 
-  if (!categories) throw notFound();
+    if (!categories) throw notFound();
 
-  return categories;
+    return categories;
+  } catch (error) {
+    console.error("Failed to get categories:", error);
+    throw notFound();
+  }
 };
 
 export const fetchCategory = async (slug: string) => {
-  const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_URL}/api/categories/${slug}`
-  );
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/categories/${slug}`
+    );
 
-  if (!response.ok) throw notFound();
+    if (!response.ok) throw notFound();
 
-  const category = await response.json();
+    const category = await response.json();
 
-  if (!category) throw notFound();
+    if (!category) throw notFound();
 
-  return category;
+    return category;
+  } catch (error) {
+    console.error(`Failed to get category with slug ${slug}:`, error);
+    throw notFound();
+  }
 };

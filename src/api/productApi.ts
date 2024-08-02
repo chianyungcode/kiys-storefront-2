@@ -25,6 +25,6 @@ export const fetchProduct = async (slug: string) => {
     if (axios.isAxiosError(error) && error.response?.status === 404) {
       throw notFound();
     }
-    throw new Error("Terjadi kesalahan jaringan");
+    throw notFound();
   }
 };
