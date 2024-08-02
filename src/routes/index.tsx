@@ -34,13 +34,13 @@ function Index() {
             <img src="/images/keyboards.webp" alt="" className="rounded-2xl" />
           </SwiperSlide>
           <SwiperSlide>
-            <img src="/images/keyboards.webp" alt="" />
+            <img src="/images/keyboards.webp" alt="" className="rounded-2xl" />
           </SwiperSlide>
           <SwiperSlide>
-            <img src="/images/keyboards.webp" alt="" />
+            <img src="/images/keyboards.webp" alt="" className="rounded-2xl" />
           </SwiperSlide>
           <SwiperSlide>
-            <img src="/images/keyboards.webp" alt="" />
+            <img src="/images/keyboards.webp" alt="" className="rounded-2xl" />
           </SwiperSlide>
         </Swiper>
 
