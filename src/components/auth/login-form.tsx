@@ -11,7 +11,7 @@ import { axiosAuth } from "@/lib/axios";
 import { authenticationSchema } from "@/lib/zod-schema";
 
 const LoginForm = () => {
-  const { setAccessToken, setUserId } = useAuth();
+  const { setAccessToken } = useAuth();
 
   const form = useForm<z.infer<typeof authenticationSchema.login>>({
     resolver: zodResolver(authenticationSchema.login),
@@ -31,7 +31,6 @@ const LoginForm = () => {
         password,
       });
 
-      setUserId(response.data.data.user.id);
       setAccessToken(response.data.data.auth.accessToken);
     } catch (error) {
       console.log(error);

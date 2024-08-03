@@ -4,7 +4,6 @@ import {
   createFileRoute,
   useLoaderData,
   useLocation,
-  useNavigate,
   useParams,
 } from "@tanstack/react-router";
 import { Heart, ShoppingBag } from "lucide-react";
@@ -34,7 +33,7 @@ import { capitalizationFirstLetter } from "@/utils/string-format";
 
 const formSchema = z.object({
   isPaid: z.boolean().default(false),
-  userId: z.string().uuid(),
+  userId: z.string(),
   orderItems: z.array(
     z.object({
       productId: z.string().uuid(),
@@ -44,32 +43,39 @@ const formSchema = z.object({
 });
 
 const ProductDetailsPage = () => {
+  // State for managing the quantity of items to be purchased
   const [numberQuantity, setNumberQuantity] = useState(1);
-  const { userId, accessToken } = useAuth();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  const { userId } = useAuth();
 
+  // Fetch product data from loader
   const { product } = useLoaderData({ from: "/_layout/products/$productSlug" });
   const { data }: { data: Product } = product;
+  // Format product price to Rupiah
   const productPrice = formatToRupiah(data.price);
 
+  // Get route parameters and current location
   const params = useParams({ from: "/_layout/products/$productSlug" });
   const { pathname } = useLocation();
   const splittedPathname = pathname.split("/").slice(1, 3);
 
+  // Determine if the current product is active in the breadcrumb
   const isParamsActive =
     params.productSlug === splittedPathname[1]
       ? "font-bold text-black"
       : "font-base";
 
+  // Handler for quantity change
   const onChangeQuantity = (value: number) => {
     setNumberQuantity(value);
   };
 
+  // Initialize form with react-hook-form and zod validation
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       isPaid: false,
-      userId: userId || undefined,
+      userId: "",
       orderItems: [
         {
           productId: data.id,
@@ -80,20 +86,12 @@ const ProductDetailsPage = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log("Form submitted", values); // Tambahkan log untuk memastikan onSubmit dipanggil
-
-    if (!accessToken) {
-      navigate({ to: "/login" });
-    }
-
     try {
-      const response = await axiosInstance.post("/orders", {
+      await axiosInstance.post("/orders", {
         isPaid: values.isPaid,
-        userId: values.userId,
+        userId: userId,
         orderItems: values.orderItems,
       });
-
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -213,6 +211,7 @@ const ProductDetailsPage = () => {
                     <Button
                       type="submit"
                       className="bg-[#D92A36] h-16 w-full flex gap-x-2 items-center rounded-xl"
+                      disabled={numberQuantity === 0}
                     >
                       <ShoppingBag />
                       <h2 className="text-lg">Add to cart</h2>

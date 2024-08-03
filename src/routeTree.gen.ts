@@ -28,7 +28,6 @@ import { Route as LayoutCheckoutIndexImport } from './routes/_layout/checkout/in
 import { Route as LayoutAccessoriesIndexImport } from './routes/_layout/accessories/index'
 import { Route as LayoutProductsProductSlugRouteImport } from './routes/_layout/products/$productSlug/route'
 import { Route as LayoutProtectedOrderIndexImport } from './routes/_layout/_protected/order/index'
-import { Route as LayoutProtectedForgotIndexImport } from './routes/_layout/_protected/forgot/index'
 
 // Create Virtual Routes
 
@@ -116,13 +115,6 @@ const LayoutProtectedOrderIndexRoute = LayoutProtectedOrderIndexImport.update({
   path: '/order/',
   getParentRoute: () => LayoutProtectedRoute,
 } as any)
-
-const LayoutProtectedForgotIndexRoute = LayoutProtectedForgotIndexImport.update(
-  {
-    path: '/forgot/',
-    getParentRoute: () => LayoutProtectedRoute,
-  } as any,
-)
 
 // Populate the FileRoutesByPath interface
 
@@ -233,13 +225,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutTwsIndexImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/_protected/forgot/': {
-      id: '/_layout/_protected/forgot/'
-      path: '/forgot'
-      fullPath: '/forgot'
-      preLoaderRoute: typeof LayoutProtectedForgotIndexImport
-      parentRoute: typeof LayoutProtectedImport
-    }
     '/_layout/_protected/order/': {
       id: '/_layout/_protected/order/'
       path: '/order'
@@ -256,7 +241,6 @@ export const routeTree = rootRoute.addChildren({
   IndexRoute,
   LayoutRoute: LayoutRoute.addChildren({
     LayoutProtectedRoute: LayoutProtectedRoute.addChildren({
-      LayoutProtectedForgotIndexRoute,
       LayoutProtectedOrderIndexRoute,
     }),
     LayoutProductsProductSlugRouteRoute,
@@ -314,7 +298,6 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_layout/_protected.tsx",
       "parent": "/_layout",
       "children": [
-        "/_layout/_protected/forgot/",
         "/_layout/_protected/order/"
       ]
     },
@@ -361,10 +344,6 @@ export const routeTree = rootRoute.addChildren({
     "/_layout/tws/": {
       "filePath": "_layout/tws/index.tsx",
       "parent": "/_layout"
-    },
-    "/_layout/_protected/forgot/": {
-      "filePath": "_layout/_protected/forgot/index.tsx",
-      "parent": "/_layout/_protected"
     },
     "/_layout/_protected/order/": {
       "filePath": "_layout/_protected/order/index.tsx",

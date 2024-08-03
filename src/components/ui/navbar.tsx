@@ -2,10 +2,12 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { CircleUserRound, Search, ShoppingCart } from "lucide-react";
 
 import { navbarItem } from "@/constant/navbar-item";
+import { useAuth } from "@/context/auth-provider";
 import { cn } from "@/lib/utils";
 
 const Navbar = () => {
   const { pathname } = useLocation();
+  const { accessToken } = useAuth();
 
   return (
     <header className="w-full font-sora max-w-screen-xl h-20 bg-white mx-auto px-8 flex items-center justify-between top-0 z-50 sticky">
@@ -38,9 +40,13 @@ const Navbar = () => {
         <Link to="/order">
           <ShoppingCart />
         </Link>
-        <Link to="/login">
-          <CircleUserRound />
-        </Link>
+        {accessToken ? (
+          <p>Logged in</p>
+        ) : (
+          <Link to="/login">
+            <CircleUserRound />
+          </Link>
+        )}
       </div>
     </header>
   );

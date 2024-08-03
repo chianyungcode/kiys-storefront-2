@@ -5,15 +5,17 @@ import { useAuth } from "@/context/auth-provider";
 import { axiosAuth } from "@/lib/axios";
 
 const ProtectedLayout = () => {
-  const { accessToken, setAccessToken } = useAuth();
+  const { accessToken, setAccessToken, setUserId } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMe = async () => {
       try {
         const response = await axiosAuth.post("/auth/refresh/token");
+        const userIdResponse = response.data.data.userId;
         const token = response.data.data.accessToken;
         setAccessToken(token);
+        setUserId(userIdResponse);
       } catch (error) {
         navigate({ to: "/login" });
         console.log(error);
@@ -24,7 +26,7 @@ const ProtectedLayout = () => {
     if (!accessToken) {
       fetchMe();
     }
-  }, [accessToken, setAccessToken, navigate]);
+  }, [accessToken, setAccessToken, navigate, setUserId]);
 
   return (
     <div>

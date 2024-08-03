@@ -62,7 +62,6 @@ const RegisterForm = () => {
         lastName,
       });
 
-      console.log(response.data);
       setAccessToken(response.data.data.auth.accessToken);
     } catch (error) {
       console.log(error);

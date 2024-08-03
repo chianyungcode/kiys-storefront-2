@@ -21,7 +21,7 @@ const CategoryRow = ({ category, inCategoryPage }: CategoryRowProps) => {
       )}
       <ul
         className={cn(
-          "grid gap-x-4 gap-y-6 items-center",
+          "grid gap-x-4 gap-y-6",
           inCategoryPage ? "grid-cols-3" : "grid-cols-4"
         )}
       >

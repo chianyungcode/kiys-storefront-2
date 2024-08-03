@@ -50,6 +50,9 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setUserId(response.data.data.userId);
             setAccessToken(response.data.data.accessToken);
 
+            console.log("From auth context", response.data.data.userId);
+            console.log("From auth context", response.data.data.accessToken);
+
             originalRequest.headers["Authorization"] =
               `Bearer ${response.data.data.accessToken}`;
 
@@ -58,7 +61,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             return axiosInstance(originalRequest);
           } catch (error) {
             setAccessToken(null);
-            // TODO: Can't use useNavigate from @tanstack/react-router
+            setUserId(null);
             window.location.href = "/login";
           }
         }
@@ -70,7 +73,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return () => {
       axiosInstance.interceptors.response.eject(refreshInterceptor);
     };
-  }, [setAccessToken]);
+  }, [setAccessToken, userId]);
 
   return (
     <AuthContext.Provider

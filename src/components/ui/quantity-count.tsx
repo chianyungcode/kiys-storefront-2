@@ -16,6 +16,14 @@ const QuantityCount = ({
   value,
   onChange,
 }: QuantityCountProps) => {
+  const handleBlur = () => {
+    if (value === 0) {
+      onChange(1);
+    } else {
+      onChange(value);
+    }
+  };
+
   return (
     <NumberInput className={cn("max-w-lg font-sora", className)}>
       <NumberInputButton
@@ -29,7 +37,7 @@ const QuantityCount = ({
         />
       </NumberInputButton>
       <NumberInputBox
-        min={0}
+        min={1}
         max={100}
         value={value}
         onChange={(e) => onChange(+e.target.value)}
@@ -37,6 +45,7 @@ const QuantityCount = ({
           "bg-transparent",
           inPopoverCart ? "text-white text-sm" : "text-black"
         )}
+        onBlur={handleBlur}
       />
       <NumberInputButton
         disabled={value === 100}

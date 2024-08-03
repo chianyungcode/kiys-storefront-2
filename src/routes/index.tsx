@@ -1,4 +1,9 @@
-import { createFileRoute, useLoaderData } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  useLoaderData,
+  useNavigate,
+} from "@tanstack/react-router";
+import { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
@@ -8,6 +13,8 @@ import ProductCatalog from "@/components/product-catalog";
 import Container from "@/components/ui/container";
 import Footer from "@/components/ui/footer";
 import Navbar from "@/components/ui/navbar";
+import { useAuth } from "@/context/auth-provider";
+import { axiosAuth } from "@/lib/axios";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -24,6 +31,28 @@ export const Route = createFileRoute("/")({
 function Index() {
   const { categories } = useLoaderData({ from: "/" });
   const { data } = categories;
+
+  const { accessToken, setAccessToken, setUserId } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchMe = async () => {
+      try {
+        const response = await axiosAuth.post("/auth/refresh/token");
+        const userIdResponse = response.data.data.userId;
+        const token = response.data.data.accessToken;
+        setAccessToken(token);
+        setUserId(userIdResponse);
+      } catch (error) {
+        setAccessToken(null);
+        setUserId(null);
+      }
+    };
+
+    if (!accessToken) {
+      fetchMe();
+    }
+  }, [accessToken, setAccessToken, navigate, setUserId]);
 
   return (
     <div className="relative bg-[#FDFEFE]">
