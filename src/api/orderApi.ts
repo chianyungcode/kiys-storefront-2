@@ -4,8 +4,11 @@ const fetchOrderByUserId = async (userId: string) => {
   try {
     const response = await axiosInstance.get(`/orders/${userId}`);
     const order = response.data;
+    const orderItems = order.data.orderItems;
 
-    return order;
+    console.log(orderItems);
+
+    return orderItems;
   } catch (error) {
     console.error("Error fetching order:", error);
     throw error;

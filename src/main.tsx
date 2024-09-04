@@ -4,7 +4,7 @@ import ReactDOM from "react-dom/client";
 
 import { routeTree } from "./routeTree.gen";
 
-import AuthProvider from "@/context/auth-provider";
+import AuthProvider, { useAuth } from "@/context/auth-provider";
 
 import "./index.css";
 
@@ -15,6 +15,10 @@ const router = createRouter({
   routeTree,
   context: {
     queryClient,
+    user: {
+      id: "4231e3fe-cead-4f05-9275-9e670d126436",
+    },
+    auth: undefined,
   },
   // defaultPreload: "intent" (This is default when using Tanstack Query get from an example from the docs)
   defaultPreload: false,
@@ -30,15 +34,24 @@ declare module "@tanstack/react-router" {
   }
 }
 
+const InnerApp = () => {
+  const auth = useAuth();
+  return <RouterProvider router={router} context={{ auth }} />;
+};
+
+const App = () => {
+  return (
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <InnerApp />
+      </QueryClientProvider>
+    </AuthProvider>
+  );
+};
+
 // Render the app
 const rootElement = document.getElementById("root")!;
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
-  root.render(
-    <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
-    </AuthProvider>
-  );
+  root.render(<App />);
 }
