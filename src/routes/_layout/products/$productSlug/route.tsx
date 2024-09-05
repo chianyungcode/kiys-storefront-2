@@ -1,35 +1,22 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Link,
-  createFileRoute,
-  useLoaderData,
-  useLocation,
-  useParams,
-} from "@tanstack/react-router";
+import { createFileRoute, useLoaderData } from "@tanstack/react-router";
 import { Heart, ShoppingBag } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { addProductToOrder } from "@/api/orderApi";
 import { fetchProduct } from "@/api/productApi";
 import NotFound from "@/components/not-found";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
+import BreadcrumbProductDetails from "@/components/routes/product-slug/breadcrumb-product-detail";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/ui/container";
 import { Form } from "@/components/ui/form";
 import QuantityCount from "@/components/ui/quantity-count";
 import { useAuth } from "@/context/auth-provider";
-import { axiosInstance } from "@/lib/axios";
 import { Image } from "@/types/image";
 import { Product } from "@/types/product";
 import { formatToRupiah } from "@/utils/currency-format";
-import { capitalizationFirstLetter } from "@/utils/string-format";
 
 const formSchema = z.object({
   isPaid: z.boolean().default(false),
@@ -49,21 +36,11 @@ const ProductDetailsPage = () => {
   const { userId } = useAuth();
 
   // Fetch product data from loader
-  const { product } = useLoaderData({ from: "/_layout/products/$productSlug" });
-  const { data }: { data: Product } = product;
-  // Format product price to Rupiah
-  const productPrice = formatToRupiah(data.price);
-
-  // Get route parameters and current location
-  const params = useParams({ from: "/_layout/products/$productSlug" });
-  const { pathname } = useLocation();
-  const splittedPathname = pathname.split("/").slice(1, 3);
-
-  // Determine if the current product is active in the breadcrumb
-  const isParamsActive =
-    params.productSlug === splittedPathname[1]
-      ? "font-bold text-black"
-      : "font-base";
+  const {
+    product: { data },
+  }: { product: { data: Product } } = useLoaderData({
+    from: "/_layout/products/$productSlug",
+  });
 
   // Handler for quantity change
   const onChangeQuantity = (value: number) => {
@@ -86,15 +63,7 @@ const ProductDetailsPage = () => {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      await axiosInstance.post("/orders", {
-        isPaid: values.isPaid,
-        userId: userId,
-        orderItems: values.orderItems,
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    addProductToOrder(userId, values);
   };
 
   useEffect(() => {
@@ -104,34 +73,7 @@ const ProductDetailsPage = () => {
   return (
     <Container>
       <div className="space-y-4">
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to="/">Home</Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link to={`/${splittedPathname[0]}`}>
-                  {capitalizationFirstLetter(splittedPathname[0])}
-                </Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbLink asChild>
-                <Link
-                  to={`/${splittedPathname[0]}/${splittedPathname[1]}`}
-                  className={isParamsActive}
-                >
-                  {data.name}
-                </Link>
-              </BreadcrumbLink>
-            </BreadcrumbItem>
-          </BreadcrumbList>
-        </Breadcrumb>
+        <BreadcrumbProductDetails productName={data.name} />
         <div className="grid grid-cols-2 gap-x-8">
           <div className="space-y-4 py-4">
             <div className="overflow-hidden rounded-3xl">
@@ -165,7 +107,7 @@ const ProductDetailsPage = () => {
             </div>
             <div className="space-y-8">
               <p className="text-5xl font-sora font-semibold text-[#323334]">
-                {productPrice}
+                {formatToRupiah(data.price)}
               </p>
               <p className="text-[#5B5C5D]">{data.description}</p>
               {/* <div className="space-y-4" id="options">
