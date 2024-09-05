@@ -1,7 +1,3 @@
-import { ShoppingCart } from "lucide-react";
-
-import IconButton from "./icon-button";
-
 import { Product } from "@/types/product";
 
 interface ProductCardProps {
@@ -18,13 +14,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           alt="Image"
           className="aspect-square object-cover rounded-2xl"
         />
-        <div className="opacity-0 group-hover:opacity-100 transition-all absolute w-full px-6 bottom-5">
+        {/* TODO [feature] : Tambahkan fungsionalitas untuk add product to order pada floating button, terkendala karena harus merubah agak banyak kode terutama pengguna harus terautentikasi dahulu untuk dapat menambahkan product ke order */}
+        {/* <div className="opacity-0 group-hover:opacity-100 transition-all absolute w-full px-6 bottom-5">
           <div className="flex gap-x-6 justify-center">
             <IconButton
               icon={<ShoppingCart size={20} className="text-gray-600" />}
             />
           </div>
-        </div>
+        </div> */}
       </div>
       {/* Description */}
       <div className="space-y-4">
