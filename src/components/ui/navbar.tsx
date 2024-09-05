@@ -1,6 +1,8 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { CircleUserRound, Search, ShoppingCart } from "lucide-react";
 
+import ProfileImage from "../navbar/profile-image";
+
 import { navbarItem } from "@/constant/navbar-item";
 import { useAuth } from "@/context/auth-provider";
 import { cn } from "@/lib/utils";
@@ -35,13 +37,18 @@ const Navbar = () => {
           ))}
         </ul>
       </nav>
-      <div className="flex gap-x-4">
+      <div className="flex gap-x-4 items-center">
         <Search />
         <Link to="/order">
-          <ShoppingCart />
+          <div className="w-12 h-12 relative flex items-center justify-center">
+            <ShoppingCart />
+            <div className="rounded-full w-4 h-4 flex items-center justify-center absolute right-0 top-0 bg-[#EF4444]">
+              <span className="text-xs text-white">2</span>
+            </div>
+          </div>
         </Link>
         {accessToken ? (
-          <p>Logged in</p>
+          <ProfileImage />
         ) : (
           <Link to="/login">
             <CircleUserRound />

@@ -1,25 +1,30 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import Container from "@/components/ui/container";
 import QuantityCount from "@/components/ui/quantity-count";
 import { useAuth } from "@/context/auth-provider";
 import { axiosInstance } from "@/lib/axios";
+import { useOrderStore } from "@/lib/zustand/stores/order-store";
 import { OrderItem } from "@/types/order-item";
 import { formatToRupiah } from "@/utils/currency-format";
+import { calculateTotalPrice } from "@/utils/order-utils";
 
 const OrderPage = () => {
   const { userId } = useAuth(); // Ambil userId dari context auth
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
-  const price = formatToRupiah(1800000);
+  const { order, setOrder } = useOrderStore((state) => state);
+  // const [order, setOrder] = useState<Order | null>(null);
 
   useEffect(() => {
     const fetchOrderItems = async () => {
       if (userId) {
         try {
           const { data } = await axiosInstance.get(`/orders/${userId}`);
+          setOrder(data.data[0]);
+
           setOrderItems(data.data[0]?.orderItems || []);
         } catch (error) {
           console.error("Error fetching order items:", error);
@@ -28,11 +33,38 @@ const OrderPage = () => {
     };
 
     fetchOrderItems();
-  }, [userId]);
+  }, [userId, setOrder]);
 
-  useEffect(() => {
-    console.log("Ini adalah orderItems", orderItems);
-  }, [orderItems]);
+  // TODO [refactor] : Pisahkan fungsi ini nanti ke `orderApi.ts`
+  const handleRemoveItem = async (itemId: string) => {
+    try {
+      const updatedOrderItems = orderItems.filter((item) => item.id !== itemId);
+
+      const response = await axiosInstance.patch(
+        `${import.meta.env.VITE_BACKEND_URL}/orders/${order?.id}`,
+        {
+          isPaid: order?.isPaid,
+          orderItems: updatedOrderItems.map((orderItem) => ({
+            id: orderItem.id,
+            productId: orderItem.productId,
+            quantity: orderItem.quantity,
+          })),
+        }
+      );
+
+      if (response.status === 200) {
+        setOrderItems(updatedOrderItems);
+        console.log("Item berhasil dihapus");
+      }
+    } catch (error) {
+      console.error("Gagal menghapus item:", error);
+    }
+  };
+
+  const totalPrice = useMemo(
+    () => calculateTotalPrice(orderItems),
+    [orderItems]
+  );
 
   return (
     <Container className="space-y-6">
@@ -45,14 +77,18 @@ const OrderPage = () => {
                 <img src="/public/images/image.webp" alt="" className="h-32" />
                 <div className="flex-col justify-between space-y-4 w-full">
                   <div className="flex justify-between">
-                    <h1 className="font-medium font-sora">
-                      {item.product.name}
-                    </h1>
-                    <Button
-                      className="h-fit w-fit px-0 py-0 bg-transparent hover:bg-transparent
-            "
-                    >
-                      <X className="text-black" />
+                    <Link to={`/products/${item.product.slug}`}>
+                      <h1 className="font-medium font-sora">
+                        {item.product.name}
+                      </h1>
+                    </Link>
+                    <Button className="h-fit w-fit px-0 py-0 bg-transparent hover:bg-transparent">
+                      <button
+                        onClick={() => handleRemoveItem(item.id)}
+                        className="hover:bg-gray-100 p-1 ease-out transition-all duration-500 rounded-xl"
+                      >
+                        <X className="text-black hover:scale-95 duration-200 transition-all" />
+                      </button>
                     </Button>
                   </div>
                   <p className="font-medium font-sora text-gray-500">
@@ -60,12 +96,14 @@ const OrderPage = () => {
                   </p>
                   <div className="flex justify-between items-center">
                     <QuantityCount
-                      value={1}
+                      value={item.quantity}
                       onChange={() => {}}
                       inPopoverCart={false}
                       className="h-10 rounded-none px-0"
                     />
-                    <p className="font-sora text-lg font-medium">{price}</p>
+                    <p className="font-sora text-lg font-medium">
+                      {formatToRupiah(item.product.price * item.quantity)}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -77,30 +115,33 @@ const OrderPage = () => {
         <div className="bg-[#323334] py-4 px-5 text-white space-y-10 max-w-[19rem] w-full">
           <h1 className="text-white text-2xl font-sora">Order Summary</h1>
           <div className="space-y-3 text-white" id="product-row">
-            <div className="space-y-1">
-              <div className="flex justify-between items-center">
-                <p className="font-semibold">KIYS SK-9391</p>
-                <p>x2</p>
-              </div>
-              <div className="flex justify-between items-center">
-                <p className="text-sm">Linear Switch</p>
-                <p>{price}</p>
-              </div>
-            </div>
-            <div className="space-y-1">
-              <div className="flex justify-between items-center">
-                <p className="font-semibold">KIYS SK-9391</p>
-                <p>x2</p>
-              </div>
-              <div className="flex justify-between items-center">
-                <p className="text-sm">Linear Switch</p>
-                <p>{price}</p>
-              </div>
-            </div>
+            {orderItems && orderItems.length > 0 ? (
+              orderItems.map((orderItem) => (
+                <div className="space-y-1" key={orderItem.id}>
+                  <div className="flex justify-between items-center">
+                    <p className="font-semibold">{orderItem.product.name}</p>
+                    <p>
+                      <span>x</span>
+                      {orderItem.quantity}
+                    </p>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <p className="text-sm">Linear Switch</p>
+                    <p>
+                      {formatToRupiah(
+                        orderItem.product.price * orderItem.quantity
+                      )}
+                    </p>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>Belum ada item di keranjang belanja</p>
+            )}
           </div>
           <div className="flex justify-between items-center">
             <p className="text-xl font-medium">Total</p>
-            <p>Rp 10.030.000</p>
+            <p>{formatToRupiah(totalPrice)}</p>
           </div>
           <Link
             to="/products"
