@@ -2,11 +2,10 @@ import { notFound } from "@tanstack/react-router";
 import axios from "axios";
 
 import { axiosInstance } from "@/lib/axios";
+import { convertNameToSlug } from "@/utils/string-format";
 
 export const fetchProducts = async () => {
-  const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_URL}/api/products`
-  );
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/products`);
 
   if (!response.ok) throw notFound();
 
@@ -14,7 +13,7 @@ export const fetchProducts = async () => {
 
   if (!products) throw notFound();
 
-  return products;
+  return products.data;
 };
 
 export const fetchProduct = async (slug: string) => {
@@ -26,5 +25,17 @@ export const fetchProduct = async (slug: string) => {
       throw notFound();
     }
     throw notFound();
+  }
+};
+
+export const fetchProductByName = async (name: string) => {
+  try {
+    const slug = convertNameToSlug(name);
+
+    const { data } = await axiosInstance.get(`/products/${slug}`);
+
+    return data;
+  } catch (error) {
+    console.error(error);
   }
 };

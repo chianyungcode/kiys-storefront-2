@@ -237,26 +237,178 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-export const routeTree = rootRoute.addChildren({
-  IndexRoute,
-  LayoutRoute: LayoutRoute.addChildren({
-    LayoutProtectedRoute: LayoutProtectedRoute.addChildren({
-      LayoutProtectedOrderIndexRoute,
-    }),
-    LayoutProductsProductSlugRouteRoute,
-    LayoutAccessoriesIndexRoute,
-    LayoutCheckoutIndexRoute,
-    LayoutHeadphoneIndexRoute,
-    LayoutKeyboardsIndexRoute,
-    LayoutLoginIndexRoute,
-    LayoutMouseIndexRoute,
-    LayoutProductsIndexRoute,
-    LayoutProfileIndexRoute,
-    LayoutRegisterIndexRoute,
-    LayoutTwsIndexRoute,
-  }),
-  AboutLazyRoute,
-})
+interface LayoutProtectedRouteChildren {
+  LayoutProtectedOrderIndexRoute: typeof LayoutProtectedOrderIndexRoute
+}
+
+const LayoutProtectedRouteChildren: LayoutProtectedRouteChildren = {
+  LayoutProtectedOrderIndexRoute: LayoutProtectedOrderIndexRoute,
+}
+
+const LayoutProtectedRouteWithChildren = LayoutProtectedRoute._addFileChildren(
+  LayoutProtectedRouteChildren,
+)
+
+interface LayoutRouteChildren {
+  LayoutProtectedRoute: typeof LayoutProtectedRouteWithChildren
+  LayoutProductsProductSlugRouteRoute: typeof LayoutProductsProductSlugRouteRoute
+  LayoutAccessoriesIndexRoute: typeof LayoutAccessoriesIndexRoute
+  LayoutCheckoutIndexRoute: typeof LayoutCheckoutIndexRoute
+  LayoutHeadphoneIndexRoute: typeof LayoutHeadphoneIndexRoute
+  LayoutKeyboardsIndexRoute: typeof LayoutKeyboardsIndexRoute
+  LayoutLoginIndexRoute: typeof LayoutLoginIndexRoute
+  LayoutMouseIndexRoute: typeof LayoutMouseIndexRoute
+  LayoutProductsIndexRoute: typeof LayoutProductsIndexRoute
+  LayoutProfileIndexRoute: typeof LayoutProfileIndexRoute
+  LayoutRegisterIndexRoute: typeof LayoutRegisterIndexRoute
+  LayoutTwsIndexRoute: typeof LayoutTwsIndexRoute
+}
+
+const LayoutRouteChildren: LayoutRouteChildren = {
+  LayoutProtectedRoute: LayoutProtectedRouteWithChildren,
+  LayoutProductsProductSlugRouteRoute: LayoutProductsProductSlugRouteRoute,
+  LayoutAccessoriesIndexRoute: LayoutAccessoriesIndexRoute,
+  LayoutCheckoutIndexRoute: LayoutCheckoutIndexRoute,
+  LayoutHeadphoneIndexRoute: LayoutHeadphoneIndexRoute,
+  LayoutKeyboardsIndexRoute: LayoutKeyboardsIndexRoute,
+  LayoutLoginIndexRoute: LayoutLoginIndexRoute,
+  LayoutMouseIndexRoute: LayoutMouseIndexRoute,
+  LayoutProductsIndexRoute: LayoutProductsIndexRoute,
+  LayoutProfileIndexRoute: LayoutProfileIndexRoute,
+  LayoutRegisterIndexRoute: LayoutRegisterIndexRoute,
+  LayoutTwsIndexRoute: LayoutTwsIndexRoute,
+}
+
+const LayoutRouteWithChildren =
+  LayoutRoute._addFileChildren(LayoutRouteChildren)
+
+export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
+  '': typeof LayoutProtectedRouteWithChildren
+  '/about': typeof AboutLazyRoute
+  '/products/$productSlug': typeof LayoutProductsProductSlugRouteRoute
+  '/accessories': typeof LayoutAccessoriesIndexRoute
+  '/checkout': typeof LayoutCheckoutIndexRoute
+  '/headphone': typeof LayoutHeadphoneIndexRoute
+  '/keyboards': typeof LayoutKeyboardsIndexRoute
+  '/login': typeof LayoutLoginIndexRoute
+  '/mouse': typeof LayoutMouseIndexRoute
+  '/products': typeof LayoutProductsIndexRoute
+  '/profile': typeof LayoutProfileIndexRoute
+  '/register': typeof LayoutRegisterIndexRoute
+  '/tws': typeof LayoutTwsIndexRoute
+  '/order': typeof LayoutProtectedOrderIndexRoute
+}
+
+export interface FileRoutesByTo {
+  '/': typeof IndexRoute
+  '': typeof LayoutProtectedRouteWithChildren
+  '/about': typeof AboutLazyRoute
+  '/products/$productSlug': typeof LayoutProductsProductSlugRouteRoute
+  '/accessories': typeof LayoutAccessoriesIndexRoute
+  '/checkout': typeof LayoutCheckoutIndexRoute
+  '/headphone': typeof LayoutHeadphoneIndexRoute
+  '/keyboards': typeof LayoutKeyboardsIndexRoute
+  '/login': typeof LayoutLoginIndexRoute
+  '/mouse': typeof LayoutMouseIndexRoute
+  '/products': typeof LayoutProductsIndexRoute
+  '/profile': typeof LayoutProfileIndexRoute
+  '/register': typeof LayoutRegisterIndexRoute
+  '/tws': typeof LayoutTwsIndexRoute
+  '/order': typeof LayoutProtectedOrderIndexRoute
+}
+
+export interface FileRoutesById {
+  __root__: typeof rootRoute
+  '/': typeof IndexRoute
+  '/_layout': typeof LayoutRouteWithChildren
+  '/about': typeof AboutLazyRoute
+  '/_layout/_protected': typeof LayoutProtectedRouteWithChildren
+  '/_layout/products/$productSlug': typeof LayoutProductsProductSlugRouteRoute
+  '/_layout/accessories/': typeof LayoutAccessoriesIndexRoute
+  '/_layout/checkout/': typeof LayoutCheckoutIndexRoute
+  '/_layout/headphone/': typeof LayoutHeadphoneIndexRoute
+  '/_layout/keyboards/': typeof LayoutKeyboardsIndexRoute
+  '/_layout/login/': typeof LayoutLoginIndexRoute
+  '/_layout/mouse/': typeof LayoutMouseIndexRoute
+  '/_layout/products/': typeof LayoutProductsIndexRoute
+  '/_layout/profile/': typeof LayoutProfileIndexRoute
+  '/_layout/register/': typeof LayoutRegisterIndexRoute
+  '/_layout/tws/': typeof LayoutTwsIndexRoute
+  '/_layout/_protected/order/': typeof LayoutProtectedOrderIndexRoute
+}
+
+export interface FileRouteTypes {
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths:
+    | '/'
+    | ''
+    | '/about'
+    | '/products/$productSlug'
+    | '/accessories'
+    | '/checkout'
+    | '/headphone'
+    | '/keyboards'
+    | '/login'
+    | '/mouse'
+    | '/products'
+    | '/profile'
+    | '/register'
+    | '/tws'
+    | '/order'
+  fileRoutesByTo: FileRoutesByTo
+  to:
+    | '/'
+    | ''
+    | '/about'
+    | '/products/$productSlug'
+    | '/accessories'
+    | '/checkout'
+    | '/headphone'
+    | '/keyboards'
+    | '/login'
+    | '/mouse'
+    | '/products'
+    | '/profile'
+    | '/register'
+    | '/tws'
+    | '/order'
+  id:
+    | '__root__'
+    | '/'
+    | '/_layout'
+    | '/about'
+    | '/_layout/_protected'
+    | '/_layout/products/$productSlug'
+    | '/_layout/accessories/'
+    | '/_layout/checkout/'
+    | '/_layout/headphone/'
+    | '/_layout/keyboards/'
+    | '/_layout/login/'
+    | '/_layout/mouse/'
+    | '/_layout/products/'
+    | '/_layout/profile/'
+    | '/_layout/register/'
+    | '/_layout/tws/'
+    | '/_layout/_protected/order/'
+  fileRoutesById: FileRoutesById
+}
+
+export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
+  LayoutRoute: typeof LayoutRouteWithChildren
+  AboutLazyRoute: typeof AboutLazyRoute
+}
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  LayoutRoute: LayoutRouteWithChildren,
+  AboutLazyRoute: AboutLazyRoute,
+}
+
+export const routeTree = rootRoute
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 /* prettier-ignore-end */
 

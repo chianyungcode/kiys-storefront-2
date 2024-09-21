@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-import keepPreset from "keep-react/preset";
+// import keepPreset from "keep-react/preset";
+import { keepTheme } from "keep-react/keepTheme";
 
 // eslint-disable-next-line no-undef
 module.exports = {
@@ -9,9 +10,9 @@ module.exports = {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
-    "node_modules/keep-react/**/*.{js,jsx,ts,tsx}", // Related to keep-react depedency
+    // "node_modules/keep-react/**/*.{js,jsx,ts,tsx}", // Related to keep-react depedency
   ],
-  presets: [keepPreset],
+  presets: [keepTheme],
   prefix: "",
   theme: {
     container: {
