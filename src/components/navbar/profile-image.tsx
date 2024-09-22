@@ -6,8 +6,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuth } from "@/context/auth-provider";
 
 const ProfileImage = () => {
+  const { setAccessToken } = useAuth();
+
   const handleLogout = async () => {
     try {
       const response = await fetch(
@@ -19,6 +22,7 @@ const ProfileImage = () => {
       );
 
       console.log(response.json());
+      setAccessToken(null);
     } catch (error) {
       console.error(error);
     }
